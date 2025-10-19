@@ -320,17 +320,13 @@ namespace COM3D2.SkinMerge
         /// <returns></returns>
         internal static void ForceAlpha(this Texture2D texture, float alpha=1f)
         {
-            alpha *= 2;
             var pixels = texture.GetPixels();
-            if (alpha < 1f)
+            for (var i = 0; i < pixels.Length; i++)
             {
-                for (var i = 0; i < pixels.Length; i++)
-                    if (pixels[i].a > 0f) pixels[i].a *= alpha;
-            }
-            else
-            {
-                for (var i = 0; i < pixels.Length; i++)
-                    if (pixels[i].a > 0f) pixels[i].a += (1 - pixels[i].a) * (alpha - 1);
+                if (pixels[i].a <= 0f) continue;
+                var target = (alpha < 0.5f) ? 0f : 1f;
+                var t = Mathf.Abs(alpha - 0.5f) * 2f; // 0〜1に正規化
+                pixels[i].a = Mathf.Lerp(pixels[i].a, target, t);
             }
             texture.SetPixels(pixels);
             texture.Apply();
