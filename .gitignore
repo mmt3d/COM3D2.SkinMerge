@@ -3,3 +3,5 @@
 bin/
 obj/
 libs/*.dll
+*.sln.DotSettings.user
+*.DotSettings.user
