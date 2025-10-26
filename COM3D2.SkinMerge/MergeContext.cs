@@ -502,7 +502,7 @@ namespace COM3D2.SkinMerge
              * 肌関係のカラーパレットを変更した場合に呼び出される
              */
             // 合成中・合成後は受け付けない
-            if (IsMerging | IsMerged) return;
+            if (IsMerging || IsMerged) return;
             // パーツカラーに変化がない場合は何もしない
             var newColor = Maid.Parts.GetPartsColor(partsColor);
             if (BackupData.GetColor(partsColor).IsEqual(newColor)) return;
