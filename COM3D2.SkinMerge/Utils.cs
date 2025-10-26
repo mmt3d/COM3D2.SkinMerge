@@ -13,7 +13,7 @@ namespace COM3D2.SkinMerge
 
             var cultureInfo = CultureInfo.CurrentCulture;
             var textInfo = cultureInfo.TextInfo;
-            return textInfo.ToTitleCase(input.ToLower());
+            return textInfo.ToTitleCase(input.ToLowerInvariant());
         }
 
         public static string TrimUTF8Bom(this string input)
@@ -37,7 +37,7 @@ namespace COM3D2.SkinMerge
 
         public static int GetRid(this string input)
         {
-            return input.ToLower().GetHashCode();
+            return input.ToLowerInvariant().GetHashCode();
         }
    
         public static IEnumerable<List<T>> ChunkList<T>(this List<T> list, int chunkSize)

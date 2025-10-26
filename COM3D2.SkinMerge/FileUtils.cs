@@ -135,7 +135,7 @@ namespace COM3D2.SkinMerge
                 if (buffer == null) return null;
 
                 using var reader = new BinaryReader(new MemoryStream(buffer), Encoding.UTF8);
-                var fileName = menuFileName.ToLower();
+                var fileName = menuFileName.ToLowerInvariant();
                 var menu = fileName.StartsWith("mod_") ? LoadMod(reader) : LoadMenu(reader);
                 menu.FileName = fileName;
                 return menu;
@@ -408,7 +408,7 @@ namespace COM3D2.SkinMerge
 
         internal static string SearchBackupXmlPath(string saveDir, string fileName)
         {
-            var xmlFileName = Path.ChangeExtension(fileName, ".skmg.xml").ToLower();
+            var xmlFileName = Path.ChangeExtension(fileName, ".skmg.xml").ToLowerInvariant();
             string path = null;
             try
             {
@@ -416,7 +416,7 @@ namespace COM3D2.SkinMerge
                 {
                     if (!Directory.Exists(dir)) continue;
                     path = Directory.GetFiles(dir, "*.skmg.xml", SearchOption.AllDirectories)
-                        .FirstOrDefault(x => Path.GetFileName(x).ToLower() == xmlFileName);
+                        .FirstOrDefault(x => Path.GetFileName(x).ToLowerInvariant() == xmlFileName);
                     if (path != null) break;
                 }
             }
@@ -507,7 +507,7 @@ namespace COM3D2.SkinMerge
 
         internal static bool ExistsMenu(string menuFileName)
         {
-            var rid = menuFileName.ToLower().GetHashCode();
+            var rid = menuFileName.ToLowerInvariant().GetHashCode();
             return SceneEdit.m_menuRidDic.ContainsKey(rid);
         }
 

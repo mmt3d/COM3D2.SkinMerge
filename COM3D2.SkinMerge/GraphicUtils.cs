@@ -46,8 +46,8 @@ namespace COM3D2.SkinMerge
         private static Material GetShaderMaterial(string shaderName)
         {
             if (CachedMaterials.TryGetValue(shaderName, out var material)) return material;
-            
-            var shaderPath = $"Assets/Shaders/{shaderName}.shader".ToLower();
+
+            var shaderPath = $"Assets/Shaders/{shaderName}.shader".ToLowerInvariant();
             var shader = _assetBundle.LoadAsset<Shader>(shaderPath);
             var mat = new Material(shader);
             CachedMaterials.Add(shaderName, mat);

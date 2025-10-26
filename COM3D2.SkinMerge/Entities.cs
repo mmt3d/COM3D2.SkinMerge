@@ -202,11 +202,11 @@ namespace COM3D2.SkinMerge
         private string FixedLayerNo => MenuLayerNo == LayerNo ? LayerNo.ToString() : MenuLayerNo + " ▶ " + LayerNo;
 
         private string FixedBlendMode => MenuBlendMode == BlendMode ?
-            BlendMode.ToString().ToLower() : (MenuBlendMode + " ▶ " + BlendMode).ToLower();
+            BlendMode.ToString().ToLowerInvariant() : (MenuBlendMode + " ▶ " + BlendMode).ToLowerInvariant();
 
-        internal string FixedBlendModeShort => MenuBlendMode == BlendMode ? BlendMode.ToString().ToLower() :
+        internal string FixedBlendModeShort => MenuBlendMode == BlendMode ? BlendMode.ToString().ToLowerInvariant() :
             (MenuBlendMode.ToString().Substring(0, 1) + " ▶ " +
-             BlendMode.ToString().Substring(0, 1)).ToLower();
+             BlendMode.ToString().Substring(0, 1)).ToLowerInvariant();
 
         internal string Tooltip => $"{Name}\n" +
                                    $" {_L("gui.label.layer")}: {FixedLayerNo}\n" +

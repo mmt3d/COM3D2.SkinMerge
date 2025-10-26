@@ -88,7 +88,7 @@ namespace COM3D2.SkinMerge
         {
             if (obj == null) return string.Empty;
             var type = obj.GetType();
-            var key = type == typeof(string) ? obj.ToString() : $"{type.ToString().ToLower()}.{obj}";
+            var key = type == typeof(string) ? obj.ToString() : $"{type.ToString().ToLowerInvariant()}.{obj}";
             foreach (var langCode in FallbackLangCodes)
             {
                 if (!AllLanguages.TryGetValue(langCode, out var lang)) continue;

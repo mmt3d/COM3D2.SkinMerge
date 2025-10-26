@@ -119,7 +119,7 @@ namespace COM3D2.SkinMerge
             {
                 var mi2 = Maid.GetProp(MPN.chikubi).GetMenu();
                 // chikubi未選択(chikubicolorだけ残っている状態)なので対象外とする ※公式は削除がないので削除MODで発生する
-                if (mi2 == null || mi2.FileName.ToLower() == Cm.NippleDelMenuName.Value.ToLower()) return;
+                if (mi2 == null || mi2.FileName.ToLowerInvariant() == Cm.NippleDelMenuName.Value.ToLowerInvariant()) return;
                 siblingSource = new MergeSource
                 {
                     Mpn = mi2.Mpn, BlendMode = BlendMode.None, MenuFileName = mi2.FileName
@@ -408,10 +408,10 @@ namespace COM3D2.SkinMerge
         
         private string FixWildcardFileName(SlotID slot, string fileName)
         {
-            if (!fileName.Contains("*")) return fileName.ToLower();
+            if (!fileName.Contains("*")) return fileName.ToLowerInvariant();
             var modelFileName = Maid.body0.GetSlot((int)slot).m_strModelFileName;
             var modelName = Path.GetFileNameWithoutExtension(modelFileName);
-            return fileName.Replace("*", modelName).ToLower();
+            return fileName.Replace("*", modelName).ToLowerInvariant();
         }
         
         private IEnumerator LoadSkinTexture(MergeResult result, string texFileName)
@@ -457,7 +457,7 @@ namespace COM3D2.SkinMerge
                     {
                         var mi = sp?.GetMenu();
                         if (mi == null) continue;
-                        var selected = restoreSelected?.Contains(mi.FileName.ToLower());
+                        var selected = restoreSelected?.Contains(mi.FileName.ToLowerInvariant());
                         var visible = ContainsFilter(mi.Mpn, selected);
                         if (mi.TryGetBlendable(out var tbMain, out var tbShadow))
                             AddSource(mpn, mi, tbMain, tbShadow, sp.fTexMulAlpha, visible, selected);
@@ -467,7 +467,7 @@ namespace COM3D2.SkinMerge
                 {
                     var mi = mp.GetMenu();
                     if (mi == null) continue;
-                    var selected = restoreSelected?.Contains(mi.FileName.ToLower());
+                    var selected = restoreSelected?.Contains(mi.FileName.ToLowerInvariant());
                     var visible = ContainsFilter(mi.Mpn, selected);
                     if (mi.TryGetBlendable(out var tbMain, out var tbShadow))
                         AddSource(mpn, mi, tbMain, tbShadow, 1f, visible, selected);
