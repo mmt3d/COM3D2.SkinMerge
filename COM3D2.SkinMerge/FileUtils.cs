@@ -312,7 +312,7 @@ namespace COM3D2.SkinMerge
                 using var reader = new BinaryReader(new MemoryStream(buffer), Encoding.UTF8);
                 using var file = File.OpenWrite(filePath);
                 using var writer = new BinaryWriter(file);
-                if (reader.ReadString() != "CM3D2_MENU") throw new Exception("ヘッダーが不正です。");
+                if (reader.ReadString() != "CM3D2_MENU") throw new InvalidDataException("ヘッダーが不正です。");
                 writer.Write("CM3D2_MENU");
                 writer.Write(reader.ReadInt32());
 
