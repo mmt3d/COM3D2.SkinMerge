@@ -195,6 +195,8 @@ namespace COM3D2.SkinMerge
                         };
                         menu.TextureChanges.Add(tc);
                         break;
+                    default:
+                        break;
                 }
                 Console.WriteLine("  " + key + " = " + string.Join(",", values));
             }
@@ -278,6 +280,8 @@ namespace COM3D2.SkinMerge
                     case "delitem":
                         if (stringList.Length == 2)
                             menu.DelItems.Add(stringList[1]);
+                        break;
+                    default:
                         break;
                 }
             }
