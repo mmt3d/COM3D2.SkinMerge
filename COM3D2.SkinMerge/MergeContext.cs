@@ -339,7 +339,7 @@ namespace COM3D2.SkinMerge
         
         internal void LoadSkin()
         {
-            _status ^= _status;
+            _status = Stat.Init;
             ClearResults();
             BaseMenu = Maid.GetProp(MPN.skin).GetMenu();
             var isMod = BaseMenu.ModBaseMenu != null;
