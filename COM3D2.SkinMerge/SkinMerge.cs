@@ -29,12 +29,13 @@ namespace COM3D2.SkinMerge
         public const string PluginVersion = "1.0.0.0";
         internal const string PluginTitleName = PluginName + " " + PluginVersion;
 
-        internal static SkinMerge Instance { get; private set; }
+        private static SkinMerge _instance;
+        internal static SkinMerge Instance => _instance ??= FindObjectOfType<SkinMerge>();
         private static ConfigManager Cm => ConfigManager.Instance;
         private static WindowManager Wm => WindowManager.Instance;
         private static DialogManager Dm => DialogManager.Instance;
         private static SceneEdit SceneEdit => SceneEdit.Instance;
-        internal static ManualLogSource Log;
+        internal static ManualLogSource Log => Instance?.Logger;
         
         internal bool IsDeletingTattoo = false;
         internal int CurrentScene;
@@ -45,7 +46,8 @@ namespace COM3D2.SkinMerge
         private bool _guiOpen;
         internal bool EnableHook;
         internal bool HasMaidLoader;
-        internal static Harmony Harmony;
+        private Harmony _harmony;
+        internal static Harmony HarmonyInstance => Instance?._harmony;
         
         public void Awake()
         {
@@ -55,11 +57,9 @@ namespace COM3D2.SkinMerge
                 return;
             }
 
-            Instance = this;
-            Log = Logger;
             DontDestroyOnLoad(this);
             GU.LoadAssetBundle("asset_bundle");
-            Harmony = Harmony.CreateAndPatchAll(typeof(HarmonyPatches));
+            _harmony = Harmony.CreateAndPatchAll(typeof(HarmonyPatches));
         }
 
         public void Start()
