@@ -1,4 +1,12 @@
-﻿# 目次
+﻿
+![GitHub License](https://img.shields.io/github/license/mmt3d/COM3D2.SkinMerge)
+![GitHub Release](https://img.shields.io/github/v/release/mmt3d/COM3D2.SkinMerge)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mmt3d/COM3D2.SkinMerge/total)
+![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ddc9d1e88d24a07b10fc0bb9b9dffc5)
+[![Static Badge](https://img.shields.io/badge/%40momo3d2-FFFFFF?style=flat&logo=X&labelColor=gray)](https://x.com/momo3d2)
+
+
+# 目次
  
 - [概要](#概要)
 - [動作条件](#動作条件)
