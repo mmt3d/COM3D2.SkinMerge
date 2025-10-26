@@ -2,6 +2,7 @@
 .vs/
 bin/
 obj/
+packages/
 libs/*.dll
 *.sln.DotSettings.user
 *.DotSettings.user

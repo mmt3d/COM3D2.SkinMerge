@@ -1,8 +1,8 @@
 ﻿
-![GitHub License](https://img.shields.io/github/license/mmt3d/COM3D2.SkinMerge)
-![GitHub Release](https://img.shields.io/github/v/release/mmt3d/COM3D2.SkinMerge)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mmt3d/COM3D2.SkinMerge/total)
-![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ddc9d1e88d24a07b10fc0bb9b9dffc5)
+[![GitHub License](https://img.shields.io/github/license/mmt3d/COM3D2.SkinMerge)](https://github.com/mmt3d/COM3D2.SkinMerge/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/mmt3d/COM3D2.SkinMerge)](https://github.com/mmt3d/COM3D2.SkinMerge/releases)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mmt3d/COM3D2.SkinMerge/total)](https://github.com/mmt3d/COM3D2.SkinMerge/releases)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ddc9d1e88d24a07b10fc0bb9b9dffc5)](https://www.codacy.com/)
 [![Static Badge](https://img.shields.io/badge/%40momo3d2-FFFFFF?style=flat&logo=X&labelColor=gray)](https://x.com/momo3d2)
 
 
@@ -244,7 +244,7 @@ COM3D2の実際のレンダリング仕様に忠実に合わせることを目�
 - 生成したMODの配布は禁止します。(上記[注意事項](#注意事項)参照)
 - 本プラグインの改変は自由に行っていただいて構いませんが、改変物および再配布されたものに関して作者は一切の責任を負いかねます。
 - バグ報告や修正プルリクエスト等は歓迎いたします。可能な限り対応いたします。下記までご連絡ください。  
-  ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/mmt3d/COM3D2.SkinMerge)
+  [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/mmt3d/COM3D2.SkinMerge)](https://github.com/mmt3d/COM3D2.SkinMerge/issues)
   [![Static Badge](https://img.shields.io/badge/%40momo3d2-FFFFFF?style=flat&logo=X&labelColor=gray)](https://x.com/momo3d2)
 
 
