@@ -5,6 +5,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ddc9d1e88d24a07b10fc0bb9b9dffc5)](https://www.codacy.com/)
 [![Static Badge](https://img.shields.io/badge/%40momo3d2-FFFFFF?style=flat&logo=X&labelColor=gray)](https://x.com/momo3d2)
 
+<!-- content begin -->
 
 # 目次
  
@@ -60,7 +61,7 @@ COM3D2用 肌MOD合成プラグイン(BepInEx用)です。
 
 対象メイドでエディットシーンに移動し 、操作GUIを表示します。操作GUIはエディットシーンでしか表示されません。
 - デフォルトでは`Ctrl+E`キー
-- こちらのギアアイコン ![gear_icon](COM3D2.SkinMerge/bundle/gear_icon.png) からでも表示できます。
+- こちらのギアアイコン ![gear_icon](docs/img-gear-icon.png) からでも表示できます。
 
 操作GUIでの基本的な操作手順は以下の通りです。
 
@@ -244,8 +245,8 @@ COM3D2の実際のレンダリング仕様に忠実に合わせることを目�
 - 生成したMODの配布は禁止します。(上記[注意事項](#注意事項)参照)
 - 本プラグインの改変は自由に行っていただいて構いませんが、改変物および再配布されたものに関して作者は一切の責任を負いかねます。
 - バグ報告や修正プルリクエスト等は歓迎いたします。可能な限り対応いたします。下記までご連絡ください。  
-  [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/mmt3d/COM3D2.SkinMerge)](https://github.com/mmt3d/COM3D2.SkinMerge/issues)
-  [![Static Badge](https://img.shields.io/badge/%40momo3d2-FFFFFF?style=flat&logo=X&labelColor=gray)](https://x.com/momo3d2)
+  - [COM3D2.SkinMerge Github Issues](https://github.com/mmt3d/COM3D2.SkinMerge/issues)
+  - [X: @momo3d2](https://x.com/momo3d2)
 
 
 # ライセンス
