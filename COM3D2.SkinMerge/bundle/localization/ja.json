@@ -51,7 +51,7 @@
     "dlg.msg.saved_manual_refresh": "合成結果をMODに保存しました。手動でMaidLoaderやModRefreshなどでMODリスト更新すると、交換着脱が可能になります。",
     "dlg.msg.restore_confirmation": "現在の構成が復元構成と競合する要素を含んでいます。復元構成で上書き適用しますが、よろしいですか？",
     "dlg.msg.double_merge": "合成MODにさらに合成しようとしています。これを上書き保存すると元の構成への復元は不可能となりますのでご注意ください。",
-    "dlg.label.menu_prefix": "保存フォルダ・MOD名prefix",
+    "dlg.label.menu_prefix": "保存フォルダ・MOD名プレフィックス",
     "dlg.label.menu_priority": "メニュー優先番号(並び順)",
 
     "cfg.general": "全般",

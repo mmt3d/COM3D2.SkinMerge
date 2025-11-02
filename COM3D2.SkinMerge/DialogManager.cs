@@ -61,7 +61,7 @@ namespace COM3D2.SkinMerge
 		private void DialogGuiFunc(Dialog dialog, int guiId)
 		{
 			GUI.enabled = true;
-			GUILayout.Label(dialog.Message, GS.DialogMessage, GUILayout.MinWidth(350));
+			GUILayout.Label(dialog.Message, GS.DialogMessage, GUILayout.MinWidth(400));
 			dialog.GUIFunc?.Invoke(dialog);
 			using (new GUILayout.HorizontalScope())
 			{

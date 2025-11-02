@@ -216,6 +216,7 @@ namespace COM3D2.SkinMerge
 							if (pre != filter.IsVisible)
 								Ctx.ChangeFilter(filter);
 						}
+						GUILayout.Space(20);
 
 						// ボタン一覧
 						GUILayout.Label(_L("gui.label.steps"), GS.LabelHeader);
