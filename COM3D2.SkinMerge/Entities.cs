@@ -49,7 +49,7 @@ namespace COM3D2.SkinMerge
         }
         
         /// <summary>
-        /// 指定スロットの肌テクスチャ変更リストを取得する
+        /// 指定スロットの肌テクスチャ変更リストを返却する(合成に無関係なものを除外)
         /// </summary>
         internal List<TextureChange> GetTexChanges(SlotID slot)
         {
@@ -60,6 +60,18 @@ namespace COM3D2.SkinMerge
                     x.TexName == "_MainTex" || x.TexName == "_ShadowTex" || x.TexName == "_OutlineTex" ||
                     x.PartsColor == PARTS_COLOR.SKIN || x.PartsColor == PARTS_COLOR.SKIN_OUTLINE)
                 .OrderBy(x => x.TexName).ToList();
+        }
+
+        /// <summary>
+        /// 全肌テクスチャ変更リストを返却する(合成に無関係なものを除外)
+        /// </summary>
+        internal List<TextureChange> GetTexChanges()
+        {
+            return TextureChanges
+                .Where(x => 
+                    x.SlotId == SlotID.body && x.MatNo == 0 ||
+                    x.SlotId == SlotID.head && x.MatNo == 5)
+                .ToList();
         }
 
         /// <summary>

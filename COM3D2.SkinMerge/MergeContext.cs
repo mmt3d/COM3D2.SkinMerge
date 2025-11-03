@@ -727,7 +727,7 @@ namespace COM3D2.SkinMerge
             menu.IconName = $"{SaveName}.tex";
             var garbage = new List<Texture2D>();
             var textures = new Dictionary<string, Texture2D> { { menu.IconName, NewIcon } };
-            foreach (var t in mi.TextureChanges)
+            foreach (var t in mi.GetTexChanges())
             {
                 if (!TryGetResult(t.SlotId, t.FixedTexName, out var result)) continue;
                 var texFileName = $"{SaveName}_{t.SlotId}{t.FixedTexName}.tex";

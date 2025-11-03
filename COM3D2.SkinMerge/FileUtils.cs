@@ -354,7 +354,7 @@ namespace COM3D2.SkinMerge
                 writer.Write(menu.Description);
 
                 var body = new MenuBody();
-                var tcList = menu.TextureChanges.ToList();
+                var tcList = menu.GetTexChanges();
                 while (true)
                 {
                     var b = reader.ReadByte();
