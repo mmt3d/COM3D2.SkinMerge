@@ -13,7 +13,7 @@ if exist output rmdir /s /q output
 md packages\%PLUGIN_NAME%\BepinEx\plugins
 
 copy %PLUGIN_NAME%\obj\Release\%PLUGIN_NAME%.dll packages\%PLUGIN_NAME%\BepinEx\plugins\
-copy docs\README.pdf packages\%PLUGIN_NAME%\README.pdf
+call tools\readme.bat packages\%PLUGIN_NAME%\README.pdf
 
 powershell Compress-Archive ^
     -Path "packages\%PLUGIN_NAME%" ^

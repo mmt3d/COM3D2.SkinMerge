@@ -1,5 +1,6 @@
 @echo off
 
+set "DST=%1
 set "TMPDIR=%SystemRoot%\Temp\SkinMerge_docs"
 mkdir "%TMPDIR%\docs"
 powershell -Command ^
@@ -16,5 +17,5 @@ pandoc README.md -o README.pdf ^
     --pdf-engine-opt="--margin-left" --pdf-engine-opt="20mm" ^
     --pdf-engine-opt="--margin-right" --pdf-engine-opt="20mm"
 popd
-copy "%TMPDIR%\README.pdf" .\docs\README.pdf
+copy "%TMPDIR%\README.pdf" "%DST%"
 rmdir /s /q "%TMPDIR%"
