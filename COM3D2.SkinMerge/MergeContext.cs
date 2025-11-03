@@ -85,6 +85,9 @@ namespace COM3D2.SkinMerge
 
         #region filter-methods
 
+        /// <summary>
+        /// 指定MPNがフィルターに含まれているかどうかを返却する
+        /// </summary>
         private bool ContainsFilter(MPN mpn, bool? restored = null)
         {
             if (mpn == MPN.chikubi) return false;
@@ -98,6 +101,9 @@ namespace COM3D2.SkinMerge
         
         #region source-methods
        
+        /// <summary>
+        /// 指定スロットの合成元リストを返却する
+        /// </summary>
         internal List<MergeSource> GetSources(SlotID slot)
         {
             return Sources
@@ -106,6 +112,9 @@ namespace COM3D2.SkinMerge
                 .ToList();
         }
 
+        /// <summary>
+        /// 合成元リストにアイテムを追加する
+        /// </summary>
         private void AddSource(MPN mpn, MenuInfo mi, TextureBlend tb, TextureBlend tbShadow, float alpha, bool visible = true, bool? selected = null, List<MergeSource> sources = null)
         {
             // menu情報上のmpnと実際のmpnが異なる場合がある(categoryが採用されてる)
@@ -173,6 +182,9 @@ namespace COM3D2.SkinMerge
                 .ForEach(x => x.BlendMode = tb.BlendMode);
         }
 
+        /// <summary>
+        /// 復元データと競合する合成元リストを返却する
+        /// </summary>
         private List<MergeSource> GetConflictSources(Backup restore)
         {
             var currentSources = new HashSet<string>(Sources
@@ -194,6 +206,9 @@ namespace COM3D2.SkinMerge
             return conflictSources;
         }
 
+        /// <summary>
+        /// 復元データと競合しない合成元リストを返却する
+        /// </summary>
         private List<MergeSource> GetDifferentSources(List<MergeSource> conflictSources)
         {
             var sources = Sources.Where(x =>
@@ -203,23 +218,35 @@ namespace COM3D2.SkinMerge
             return UnnestSources(sources);
         }
 
+        /// <summary>
+        /// 合成済みの合成元リストを返却する
+        /// </summary>
         private List<MergeSource> GetMergedSources()
         {
             var sources = Sources.Where(x => x.IsSelected && x.IsVisible).ToList();
             return UnnestSources(sources).ToList();
         }
 
+        /// <summary>
+        /// 未合成の合成元リストを返却する
+        /// </summary>
         private List<MergeSource> GetUnmergedSources()
         {
             var sources = Sources.Where(x => !x.IsSelected || !x.IsVisible).ToList();
             return UnnestSources(sources).ToList();
         }
 
+        /// <summary>
+        /// 全合成元リストを返却する
+        /// </summary>
         private List<MergeSource> GetAllSources()
         {
             return UnnestSources(Sources);
         }
 
+        /// <summary>
+        /// 合成元リストの兄弟ソースを展開して返却する
+        /// </summary>
         private static List<MergeSource> UnnestSources(List<MergeSource> sources)
         {
             var newSources = sources.ToList();
@@ -228,17 +255,26 @@ namespace COM3D2.SkinMerge
             return newSources;
         }
         
+        /// <summary>
+        /// 指定フィルターに基づき合成元の表示状態を変更する
+        /// </summary>
         internal void ChangeFilter(SourceFilter filter)
         {
             foreach (var src in Sources.Where(x => x.Mpn == filter.Mpn))
                 src.IsVisible = filter.IsVisible;
         }
 
+        /// <summary>
+        /// 合成元の進捗状態をリセットする
+        /// </summary>
         private void RevertSources()
         {
             Sources.ForEach(x => x.IsDone = false);
         }
 
+        /// <summary>
+        /// 合成元リストをクリアする
+        /// </summary>
         private void ClearSources()
         {
             foreach (var item in Sources.Where(x => x.Icon))
@@ -251,32 +287,50 @@ namespace COM3D2.SkinMerge
         
         #region result-methods
 
+        /// <summary>
+        /// 指定スロット・テクスチャ名の合成結果を取得する
+        /// </summary>
         private bool TryGetResult(SlotID slot, string texName, out MergeResult result)
         {
             result = Results.Find(x => x.SlotID == slot && x.TexName == texName);
             return result != null;
         }
 
+        /// <summary>
+        /// 指定スロットの合成結果リストを返却する
+        /// </summary>
         private List<MergeResult> GetResults(SlotID slot)
         {
             return Results.Where(x => x.SlotID == slot).ToList();
         }
         
+        /// <summary>
+        /// 合成結果の指定スロット・テクスチャ名を選択状態にする
+        /// </summary>
         internal void SelectResult(SlotID slot, string texName)
         {
             GetResults(slot).ForEach(x => x.IsSelected = x.TexName == texName);
         }
 
+        /// <summary>
+        /// 指定スロットの選択中合成結果を返却する
+        /// </summary>
         internal MergeResult GetSelectedResult(SlotID slot)
         {
             return GetResults(slot).Find(x => x.IsSelected);
         }
 
+        /// <summary>
+        /// 指定スロットの表示用合成結果リストを返却する
+        /// </summary>
         internal List<MergeResult> GetDisplayResults(SlotID slot)
         {
             return GetResults(slot).Where(x => x.InUse).OrderByTexName().ToList();
         }
 
+        /// <summary>
+        /// バックアップXMLファイルを検索してロードする
+        /// </summary>
         private void SearchBackupXml(string fileName)
         {
             var xmlPath = FU.SearchBackupXmlPath(Cm.SavePath, fileName);
@@ -284,6 +338,9 @@ namespace COM3D2.SkinMerge
                 RestoreData = FU.LoadBackup(xmlPath);
         }
 
+        /// <summary>
+        /// 合成結果を元に戻す
+        /// </summary>
         private void RevertResults()
         {
             Results.ForEach(x =>
@@ -294,6 +351,9 @@ namespace COM3D2.SkinMerge
             });
         }
 
+        /// <summary>
+        /// 合成前に戻す
+        /// </summary>
         internal void Revert()
         {
             RevertResults();
@@ -301,6 +361,9 @@ namespace COM3D2.SkinMerge
             _status &= ~(Stat.Merged | Stat.Saved | Stat.ModLoaded);
         }
 
+        /// <summary>
+        /// 合成結果リストをクリアする
+        /// </summary>
         private void ClearResults()
         {
             foreach (var item in Results.Where(x => x.Texture))
@@ -322,6 +385,9 @@ namespace COM3D2.SkinMerge
             GU.Init();
         }
         
+        /// <summary>
+        /// コンテキストをクリアする
+        /// </summary>
         internal void Clear()
         {
             ClearSources();
@@ -331,12 +397,18 @@ namespace COM3D2.SkinMerge
         
         #endregion
 
+        /// <summary>
+        /// フィルター設定をロードする
+        /// </summary>
         private void LoadFilter()
         {
             SourceFilters.Clear();
             ConfigManager.OrderMpn.ForEach(x => SourceFilters.Add(new SourceFilter { Mpn = x }));
         }
         
+        /// <summary>
+        /// ベース肌情報をロードする
+        /// </summary>
         internal void LoadSkin()
         {
             _status = Stat.Init;
@@ -406,6 +478,9 @@ namespace COM3D2.SkinMerge
             }
         }
         
+        /// <summary>
+        /// 肌メニュー内のワイルドカードファイル名を固定文字列に変換して返却する
+        /// </summary>
         private string FixWildcardFileName(SlotID slot, string fileName)
         {
             if (!fileName.Contains("*")) return fileName.ToLowerInvariant();
@@ -414,6 +489,9 @@ namespace COM3D2.SkinMerge
             return fileName.Replace("*", modelName).ToLowerInvariant();
         }
         
+        /// <summary>
+        /// 肌テクスチャをロードして合成結果にセットする
+        /// </summary>
         private IEnumerator LoadSkinTexture(MergeResult result, string texFileName)
         {
             var texture = FU.LoadTexture(texFileName);
@@ -437,6 +515,9 @@ namespace COM3D2.SkinMerge
             yield return null;
         }
 
+        /// <summary>
+        /// 合成元リストをロードする
+        /// </summary>
         internal void LoadSources(List<string> restoreSelected = null, bool viaMaidProp = false)
         {
             // 本体の機能で対象アイテムの着脱をした場合は、あとで各種ステータス・透過度を戻すために値を退避
@@ -496,11 +577,11 @@ namespace COM3D2.SkinMerge
             }
         }
         
+        /// <summary>
+        /// 肌カラーパレット変更時に合成結果の色を更新する
+        /// </summary>
         internal void UpdateSkinColor(PARTS_COLOR partsColor)
         {
-            /*
-             * 肌関係のカラーパレットを変更した場合に呼び出される
-             */
             // 合成中・合成後は受け付けない
             if (IsMerging || IsMerged) return;
             // パーツカラーに変化がない場合は何もしない
@@ -513,6 +594,9 @@ namespace COM3D2.SkinMerge
             BackupData.SetColor(partsColor, newColor);
         }
 
+        /// <summary>
+        /// 肌合成を実行する
+        /// </summary>
         private IEnumerator _mergeSkin()
         {
             _status |= Stat.Merging;
@@ -563,6 +647,9 @@ namespace COM3D2.SkinMerge
             yield return null;
         }
         
+        /// <summary>
+        /// 新肌メニュー情報を構成する
+        /// </summary>
         private void SetupNewSkinMenu()
         {
             var mi = BaseMenu;
@@ -598,25 +685,36 @@ namespace COM3D2.SkinMerge
             };
         }
         
+        /// <summary>
+        /// 肌メニューのファイル名を返却する
+        /// </summary>
         private static string GetMenuFileName(string saveName)
         {
             return $"{saveName}_i_.menu";
         }
         
+        /// <summary>
+        /// 肌フォルダメニューのファイル名を返却する
+        /// </summary>
         private static string GetFolderMenuFileName(string saveName)
         {
             return $"{saveName}.menu";
         }
 
+        /// <summary>
+        /// メニューがModLoaderなどで反映されるのを待つコルーチン
+        /// </summary>
         private IEnumerator WaitForMenuReflected(string fileName)
         {
-            // 生成されたmenuがModLoaderなどで反映されるのを待つ
             while (!SceneEdit.Instance.m_menuRidDic.ContainsKey(fileName.GetRid()))
                 yield return new WaitForSeconds(2);
             _status |= Stat.ModLoaded;
             yield return null;
         }
 
+        /// <summary>
+        /// 合成肌メニューを保存する
+        /// </summary>
         private void SaveSkinMenu()
         {
             _status &= ~Stat.Saved;
@@ -677,6 +775,9 @@ namespace COM3D2.SkinMerge
             _status |= Stat.Saved;
         }
 
+        /// <summary>
+        /// 合成肌フォルダメニューを保存する
+        /// </summary>
         private bool SaveFolderMenu()
         {
             var menu = NewFolderMenu;
@@ -688,6 +789,9 @@ namespace COM3D2.SkinMerge
             return FU.SaveMenuInherited(Path.Combine(Cm.SavePath, SaveName), "skin_folder_normal_i_.menu", menu, null);
         }
 
+        /// <summary>
+        /// 合成肌の構成バックアップXMLを保存する
+        /// </summary>
         private void SaveBackup()
         {
             BackupData.SaveName = SaveName;
@@ -697,6 +801,9 @@ namespace COM3D2.SkinMerge
             FU.SaveBackup(filePath, BackupData);
         }
 
+        /// <summary>
+        /// 合成肌構成を復元するコルーチン
+        /// </summary>
         private IEnumerator Restore(List<MergeSource> additionalItems)
         {
             _status |= Stat.Restoring;
@@ -717,6 +824,9 @@ namespace COM3D2.SkinMerge
             _status &= ~Stat.Restoring;
         }
 
+        /// <summary>
+        /// 生成MODに交換着脱する
+        /// </summary>
         internal void Replace()
         {
             var replace = new Backup
@@ -734,6 +844,9 @@ namespace COM3D2.SkinMerge
             LoadSources();
         }
 
+        /// <summary>
+        /// 指定内容で全着脱する
+        /// </summary>
         private void AttachAllTattoo(Backup attach)
         {
             Sm.EnableHook = false;
@@ -776,6 +889,9 @@ namespace COM3D2.SkinMerge
             SceneEdit.Instance.customViewWindow.UpdateAllItem();
         }
         
+        /// <summary>
+        /// 全アイテムを解除する
+        /// </summary>
         private void ClearAllTattoo()
         {
             GetAllSources().ForEach(src =>
@@ -791,6 +907,9 @@ namespace COM3D2.SkinMerge
             Maid.AllProcProp();
         }
         
+        /// <summary>
+        /// 復元確認ダイアログを表示する
+        /// </summary>
         internal void RestoreConfirm()
         {
             var conflictSources = GetConflictSources(RestoreData);
@@ -805,6 +924,9 @@ namespace COM3D2.SkinMerge
                 Sm.TaskRunner.Add(Restore(safeSources));
         }
 
+        /// <summary>
+        /// 合成確認ダイアログを表示する
+        /// </summary>
         internal void MergeSkinConfirm()
         {
             if (IsRestorable)
@@ -817,13 +939,19 @@ namespace COM3D2.SkinMerge
                 Sm.TaskRunner.Add(_mergeSkin());
         }
         
+        /// <summary>
+        /// 指定保存名の合成肌メニューが存在するか返却する
+        /// </summary>
         internal bool ExistsSaveMenu(string saveName)
         {
             return FU.ExistsMenu(GetMenuFileName(saveName)) ||
                    FU.ExistsMenu(GetFolderMenuFileName(saveName));
         }
 
-        internal void SaveSkin()
+        /// <summary>
+        /// 合成肌メニュー保存確認ダイアログを表示する
+        /// </summary>
+        internal void SaveSkinConfirm()
         {
             Dm.ShowDialog(_L("dlg.msg.save_confirmation"),
                 SaveSkinMenu, null, Dm.SaveDialogGuiFunc);
@@ -832,6 +960,9 @@ namespace COM3D2.SkinMerge
 
     internal class MergeContextMap : Dictionary<string, MergeContext>
     {
+        /// <summary>
+        /// メイドごとのコンテキストをセットアップする
+        /// </summary>
         internal MergeContext Setup(Maid maid)
         {
             var guid = maid.status.guid;
@@ -840,6 +971,9 @@ namespace COM3D2.SkinMerge
             return this[guid];
         }
         
+        /// <summary>
+        /// メイドごとのコンテキストを取得する
+        /// </summary>
         internal bool TryGet(Maid maid, out MergeContext context)
         {
             var guid = maid.status.guid;
@@ -852,6 +986,9 @@ namespace COM3D2.SkinMerge
             return false;
         }
         
+        /// <summary>
+        /// 全コンテキストをクリアする
+        /// </summary>
         internal new void Clear()
         {
             foreach (var context in Values)
@@ -863,6 +1000,9 @@ namespace COM3D2.SkinMerge
     internal static class MaidExtensions
     {
         private static ConfigManager Cm => ConfigManager.Instance;
+        /// <summary>
+        /// メイドの名前を設定に基づき取得するExtensionメソッド
+        /// </summary>
         internal static string GetName(this Maid maid)
         {
             switch (Cm.SaveNameStyle.Value)
@@ -879,6 +1019,9 @@ namespace COM3D2.SkinMerge
 
     internal static class MaidPartsExtensions
     {
+        /// <summary>
+        /// 同一パーツカラーかどうかを返却するExtensionメソッド
+        /// </summary>
         internal static bool IsEqual(this MaidParts.PartsColor a, MaidParts.PartsColor b)
         {
             if (a.m_nMainBrightness != b.m_nMainBrightness) return false;
@@ -896,6 +1039,9 @@ namespace COM3D2.SkinMerge
 
     internal static class MergeContextExtensions
     {
+        /// <summary>
+        /// 合成結果リストをテクスチャ名でソートして返却するExtensionメソッド
+        /// </summary>
         internal static IOrderedEnumerable<MergeResult> OrderByTexName(this IEnumerable<MergeResult> list)
         {
             return list
@@ -903,6 +1049,9 @@ namespace COM3D2.SkinMerge
                 .ThenBy(x => x.TexName);
         }
         
+        /// <summary>
+        /// テクスチャ名のソート順を返却するExtensionメソッド
+        /// </summary>
         private static int SortTexName(string texName)
         {
             return texName switch
@@ -914,6 +1063,9 @@ namespace COM3D2.SkinMerge
             };
         }
 
+        /// <summary>
+        /// 指定内容のTextureChangeをリストから取り出して返却するExtensionメソッド
+        /// </summary>
         internal static bool TryPop(this List<TextureChange> tcList, string[] menuArgs, out TextureChange tc)
         {
             var slot = (SlotID)Enum.Parse(typeof(SlotID), menuArgs[1]);

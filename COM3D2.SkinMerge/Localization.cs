@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BepInEx;
@@ -21,6 +20,10 @@ namespace COM3D2.SkinMerge
             Init();
         }
 
+        /// <summary>
+        /// 多言語設定のセットアップ
+        /// 存在していなければ同梱の翻訳ファイルをConfigフォルダにコピーする
+        /// </summary>
         private static void Setup()
         {
             if (!Directory.Exists(ConfigPath))
@@ -34,6 +37,10 @@ namespace COM3D2.SkinMerge
             });
         }
 
+        /// <summary>
+        /// 翻訳設定の初期化
+        /// Configフォルダ内の翻訳ファイルをロードする
+        /// </summary>
         private static void Init()
         {
             var translationFiles = Directory.GetFiles(ConfigPath, "*.json");
@@ -47,16 +54,25 @@ namespace COM3D2.SkinMerge
             SetLanguage();
         }
         
+        /// <summary>
+        /// 利用可能な言語コード一覧を取得する
+        /// </summary>
         internal static string[] GetLanguageCodes()
         {
             return AllLanguages.Keys.OrderBy(x => x).ToArray();
         }
         
+        /// <summary>
+        /// 言語名辞書を取得する
+        /// </summary>
         internal static Dictionary<string, string> GetLanguageNamesMap()
         {
             return AllLanguages.ToDictionary(x => x.Key, x => x.Value.LanguageName);
         }
 
+        /// <summary>
+        /// 利用言語コードの設定
+        /// </summary>
         internal static void SetLanguage(string languageCode = null)
         {
             FallbackLangCodes.Clear();
@@ -84,6 +100,11 @@ namespace COM3D2.SkinMerge
                 FallbackLangCodes.Add("en");
         }
 
+        /// <summary>
+        /// 翻訳テキスト(format)を取得する
+        /// objectの場合は「型名.オブジェクト名」を翻訳キーとする
+        /// </summary>
+        /// <param name="obj">翻訳キー文字列またはオブジェクト</param>
         private static string GetTranslation(object obj)
         {
             if (obj == null) return string.Empty;
@@ -100,18 +121,28 @@ namespace COM3D2.SkinMerge
             return $"{key}(no translation)";
         }
 
+        /// <summary>
+        /// 翻訳テキストを取得する
+        /// 引数はstring.Formatの引数として使用する
+        /// </summary>
         internal static string GetText(object obj, params object[] args)
         {
             var format = GetTranslation(obj);
             return string.IsNullOrEmpty(format) ? string.Empty : string.Format(format, args);
         }
 
+        /// <summary>
+        /// 簡易翻訳テキスト取得関数
+        /// </summary>
         internal static string _L(object obj, params object[] args)
         {
             return GetText(obj, args);
         }
     }
     
+    /// <summary>
+    /// 翻訳設定情報クラス
+    /// </summary>
     public class Language
     {
         public string LanguageName { get; set; }

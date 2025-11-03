@@ -46,6 +46,9 @@ namespace COM3D2.SkinMerge
 	        }
         }
 
+        /// <summary>
+        /// ダイアログを表示する
+        /// </summary>
 		internal void ShowDialog(string message, Action okFunc = null, Action cancelFunc = null, Action<Dialog> guiFunc = null)
 		{
 			_dialogs.Add(new Dialog
@@ -58,6 +61,9 @@ namespace COM3D2.SkinMerge
 			Wm.GUIEnabled = false;
 		}
 		
+        /// <summary>
+        /// ダイアログのGUI関数
+        /// </summary>
 		private void DialogGuiFunc(Dialog dialog, int guiId)
 		{
 			GUI.enabled = true;
@@ -106,6 +112,9 @@ namespace COM3D2.SkinMerge
 			GUI.DragWindow();
 		}
 		
+        /// <summary>
+        /// ダイアログを閉じる
+        /// </summary>
 		private void CloseDialog(Dialog dialog)
 		{
 			_dialogs.Remove(dialog);
@@ -113,6 +122,9 @@ namespace COM3D2.SkinMerge
 				Wm.GUIEnabled = true;
 		}
 
+        /// <summary>
+        /// 保存ダイアログのGUI関数
+        /// </summary>
 		internal void SaveDialogGuiFunc(Dialog dialog)
 		{
 			using (new GUILayout.HorizontalScope())
@@ -141,6 +153,9 @@ namespace COM3D2.SkinMerge
 			}
 		}
 
+        /// <summary>
+        /// 復元ダイアログのGUI関数
+        /// </summary>
 		internal void RestoreDialogGuiFunc(List<MergeSource> restoreSources)
 		{
 			using (new GUILayout.VerticalScope())

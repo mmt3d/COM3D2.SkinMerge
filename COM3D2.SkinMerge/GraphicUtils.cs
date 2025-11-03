@@ -42,6 +42,9 @@ namespace COM3D2.SkinMerge
             }
         }
         
+        /// <summary>
+        /// 同梱埋め込みリソースから指定シェーダーを取得しMaterialで返却
+        /// </summary>
         private static Material GetShaderMaterial(string shaderName)
         {
             if (CachedMaterials.TryGetValue(shaderName, out var material)) return material;
@@ -53,6 +56,10 @@ namespace COM3D2.SkinMerge
             return mat;
         }
 
+        /// <summary>
+        /// 2つのTexture2Dをアルファブレンド合成して返却
+        /// 主にアイコン合成用
+        /// </summary>
         private static Texture2D AlphaBlend(Texture2D baseTex, Texture2D blendTex, int width = 0, int height = 0)
         {
             var w = width > 0 ? width : Math.Max(baseTex.width, blendTex.width);
@@ -65,6 +72,9 @@ namespace COM3D2.SkinMerge
             return resultTex;
         }
 
+        /// <summary>
+        /// RenderTextureにTexture2Dを指定の合成モード・不透明度指定で合成する
+        /// </summary>
         internal static void Blend(ref RenderTexture resultTex, Texture2D blendTex, BlendMode blendMode, float alpha)
         {
             // 結果の解像度変更が必要な場合
@@ -88,6 +98,9 @@ namespace COM3D2.SkinMerge
             UnityEngine.Object.Destroy(tempRt);
         }
 
+        /// <summary>
+        /// フリーカラーテクスチャの固定色テクスチャキャッシュを更新
+        /// </summary>
         internal static void FixInfinityColor(Maid maid, Texture2D mainTex, MaidParts.PARTS_COLOR partsColor, RenderTexture resultTex)
         {
             if (partsColor == MaidParts.PARTS_COLOR.NONE || !mainTex || !resultTex) return;
@@ -96,6 +109,9 @@ namespace COM3D2.SkinMerge
             _icTextureCache.UpdateTexture(mainTex, partsColor, resultTex);
         }
         
+        /// <summary>
+        /// フリーカラーテクスチャを固定色化したRenderTextureを作成して返却
+        /// </summary>
         internal static RenderTexture CreateFixedColorRenderTexture(Maid maid, Texture2D mainTex, MaidParts.PARTS_COLOR partsColor)
         {
             if (partsColor == MaidParts.PARTS_COLOR.NONE)
@@ -109,6 +125,9 @@ namespace COM3D2.SkinMerge
             return rt;
         }
         
+        /// <summary>
+        /// メイドのサムネイルカード画像からメニューアイコン画像を作成して返却
+        /// </summary>
         internal static Texture2D CreateMenuIcon(Texture2D thumbCard, int size)
         {
             const float widthRate = 0.55f;
@@ -136,6 +155,9 @@ namespace COM3D2.SkinMerge
             return resultTex;
         }
 
+        /// <summary>
+        /// 背景用に指定Colorで塗りつぶした1x1ピクセルのTexture2Dを作成して返却
+        /// </summary>
         internal static Texture2D GetBgColor(Color color)
         {
             var tex = new Texture2D(1, 1);
@@ -145,11 +167,17 @@ namespace COM3D2.SkinMerge
             return tex;
         }
         
+        /// <summary>
+        /// グレースケールColorオブジェクトを作成して返却
+        /// </summary>
         internal static Color GrayColor(float rgb, float a = 1f)
         {
             return new Color(rgb, rgb, rgb, a);
         }
 
+        /// <summary>
+        /// アイコン背景用に指定Colorで塗りつぶしたTexture2Dに影付き合成したTexture2Dを作成して返却
+        /// </summary>
         internal static Texture2D GetIconBgTexture(Color color)
         {
             var baseTex = GetBgColor(color);
@@ -160,6 +188,9 @@ namespace COM3D2.SkinMerge
             return resultTex;
         }
 
+        /// <summary>
+        /// 指定背景色・枠色・枠サイズで枠付きTexture2Dを作成して返却
+        /// </summary>
         internal static Texture2D GetBorderedTexture(Color bgColor, Color borderColor, RectOffset border)
         {
             var w = border.left + border.right + 1;
@@ -176,6 +207,9 @@ namespace COM3D2.SkinMerge
             return tex;
         }
         
+        /// <summary>
+        /// 同梱埋め込みリソースからTexture2Dを取得して返却
+        /// </summary>
         internal static Texture2D GetEmbeddedTexture(string resourceName)
         {
             var texture = new Texture2D(1, 1);
@@ -183,11 +217,17 @@ namespace COM3D2.SkinMerge
             return texture;
         }
 
+        /// <summary>
+        /// 同梱埋め込みリソースからAssetBundleを読み込み
+        /// </summary>
         internal static void LoadAssetBundle(string assetBundleName)
         {
             _assetBundle = AssetBundle.LoadFromMemory(SM.GetResourceBytes(assetBundleName));
         }
 
+        /// <summary>
+        /// PNGデータ(byte[])からTexture2Dを作成して返却
+        /// </summary>
         internal static Texture2D PngToTexture2D(byte[] pngData)
         {
             if (pngData == null || pngData.Length == 0) return null;
@@ -197,6 +237,9 @@ namespace COM3D2.SkinMerge
             return null;
         }
 
+        /// <summary>
+        /// 指定Texture2Dから薄い影付きTexture2Dを作成して返却
+        /// </summary>
         internal static Texture2D CreateShadow(Texture2D tex)
         {
             var mask = tex.Copy();
@@ -219,6 +262,10 @@ namespace COM3D2.SkinMerge
        
         #region Extensions
         
+        /// <summary>
+        /// Texture2Dをコピーして返却するExtension
+        /// GetPixels不可なリソースにも対応
+        /// </summary>
         internal static Texture2D Copy(this Texture2D texture)
         {
             if (!texture) return null;
@@ -240,6 +287,10 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// RenderTextureをコピーして返却するExtension
+        /// (任意)解像度指定すればリサイズも可能
+        /// </summary>
         private static RenderTexture Copy(this RenderTexture rt, int width = 0, int height = 0)
         {
             if (width == 0) width = rt.width;
@@ -250,6 +301,10 @@ namespace COM3D2.SkinMerge
             return newRt;
         }
         
+        /// <summary>
+        /// RenderTextureをTexture2Dに変換して返却するExtension
+        /// (任意)解像度指定すればリサイズも可能
+        /// </summary>
         internal static Texture2D CreateTexture2D(this RenderTexture rt, int width = 0, int height = 0)
         {
             if (!rt) return null;
@@ -271,6 +326,10 @@ namespace COM3D2.SkinMerge
             return texture;
         }
 
+        /// <summary>
+        /// Texture2DをRenderTextureに変換して返却するExtension
+        /// (任意)解像度指定すればリサイズも可能
+        /// </summary>
         internal static RenderTexture CreateRenderTexture(this Texture2D texture, int width = 0, int height = 0)
         {
             if (!texture) return null;
@@ -282,6 +341,9 @@ namespace COM3D2.SkinMerge
             return rt;
         }
 
+        /// <summary>
+        /// Texture2Dを指定解像度にリサイズして返却するExtension
+        /// </summary>
         internal static Texture2D Resized(this Texture2D texture, int width, int height)
         {
             if (!texture || (texture.width == width && texture.height == height)) return texture;
@@ -293,6 +355,9 @@ namespace COM3D2.SkinMerge
             return tex;
         }
 
+        /// <summary>
+        /// Texture2Dを正方形に変換して返却するExtension
+        /// </summary>
         internal static Texture2D Squared(this Texture2D texture)
         {
             if (texture.width == texture.height) return texture;
@@ -316,7 +381,6 @@ namespace COM3D2.SkinMerge
         /// </summary>
         /// <param name="texture">ExtensionベースTexture2D</param>
         /// <param name="alpha">0f=透明化、0.5f=そのまま、1f=不透明化</param>
-        /// <returns></returns>
         internal static void ForceAlpha(this Texture2D texture, float alpha=1f)
         {
             var pixels = texture.GetPixels();
@@ -358,7 +422,6 @@ namespace COM3D2.SkinMerge
         /// Texture2Dをアルファ前乗算を解除し標準アルファ形式に戻すExtension
         /// ※RenderTextureからReadPixelsで読み取ったものをPNG保存する用
         /// </summary>
-        /// <param name="texture"></param>
         internal static void UnpremultiplyAlpha(this Texture2D texture)
         {
             var pixels = texture.GetPixels();

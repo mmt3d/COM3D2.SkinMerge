@@ -42,6 +42,12 @@ namespace COM3D2.SkinMerge
 			}
 		}
 
+		/// <summary>
+		/// 遅延ツールチップ付きボタンの描画
+		/// </summary>
+		/// <param name="text">ボタンテキスト</param>
+		/// <param name="tooltip">ツールチップ</param>
+		/// <param name="style">ボタンスタイル</param>
 		private bool DelayedTooltipButton(string text, string tooltip, GUIStyle style)
 		{
 			var content = new GUIContent(text);
@@ -63,6 +69,9 @@ namespace COM3D2.SkinMerge
 			return GUI.Button(rect, content, style);
 		}
 
+		/// <summary>
+		/// メインGUI関数
+		/// </summary>
 		private void GuiFunc(int id)
 		{
 			GUI.enabled = GUIEnabled;
@@ -240,7 +249,7 @@ namespace COM3D2.SkinMerge
 
 						GUI.enabled = GUIEnabled && Ctx.IsMerged && !Ctx.IsSaved;
 						if (DelayedTooltipButton(_L("gui.btn.save"), _L("gui.btn.save.tooltip"), GS.Button))
-							Ctx.SaveSkin();
+							Ctx.SaveSkinConfirm();
 						GUI.enabled = GUIEnabled;
 
 						GUI.enabled = GUIEnabled && Ctx.IsModLoaded;

@@ -11,6 +11,11 @@ namespace COM3D2.SkinMerge
 	    private static ConfigManager Cm => ConfigManager.Instance;
 	    private static readonly Dictionary<MPN, GUIStyle> MpnLabelStyle = new Dictionary<MPN, GUIStyle>();
 
+	    /// <summary>
+	    /// 合成元アイテムのサムネイルスタイルを返却する
+	    /// </summary>
+	    /// <param name="normal">通常時の背景色</param>
+	    /// <param name="hover">マウスホバー時の背景色</param>
 		private static GUIStyle GetThumbStyle(Color normal, Color? hover = null)
 		{
 			var bgTexture = GU.GetIconBgTexture(normal);
@@ -27,6 +32,9 @@ namespace COM3D2.SkinMerge
 			};
 		}
 
+	    /// <summary>
+	    /// 合成元アイテムのMPNラベルスタイルを返却する(MPNで背景色が変化する)
+	    /// </summary>
 		private static GUIStyle GetMpnLabelStyle(MPN mpn)
 		{
 			if (MpnLabelStyle.TryGetValue(mpn, out var guiStyle))
@@ -49,6 +57,11 @@ namespace COM3D2.SkinMerge
 			return guiStyle;
 		}
 
+	    /// <summary>
+	    /// タブ表現のスタイルを返却する
+	    /// </summary>
+	    /// <param name="active">選択中のタブかどうか</param>
+	    /// <param name="tab">タブかコンテンツボックスか</param>
 		private static GUIStyle GetTabStyle(bool active, bool tab)
 		{
 			var borderBottom = tab ? active ? 0 : 1 : 1;
@@ -95,6 +108,9 @@ namespace COM3D2.SkinMerge
 			}
 		}
 
+	    /// <summary>
+	    /// タブ間のスペーススタイルを返却する
+	    /// </summary>
 		private static GUIStyle GetTabSpaceStyle()
 		{
 			var border = new RectOffset(0, 0, 0, 1);
@@ -109,6 +125,13 @@ namespace COM3D2.SkinMerge
 			};
 		}
 
+	    /// <summary>
+	    /// GUI.skin.windowの背景テクスチャを調整して返却する
+	    /// </summary>
+	    /// <param name="state">GUI.skin.windowの対象state</param>
+	    /// <param name="color">色味を付ける指定色</param>
+	    /// <param name="alpha">0f=透明化、0.5f=そのまま、1f=不透明化</param>
+	    /// <param name="expandHeight">ヘッダ部の高さ増加指定</param>
 		private static Texture2D GetWindowBg(GUIStyleState state, Color color, float alpha = 0.5f, int expandHeight = 0)
 		{
 			var tex = state.background.Copy();
@@ -308,6 +331,12 @@ namespace COM3D2.SkinMerge
 			stretchWidth = true
 		};
 
+		/// <summary>
+		/// 合成元アイテム1個分の描画
+		/// </summary>
+		/// <param name="src">合成元アイテム情報</param>
+		/// <param name="gs">背景(枠)種別スタイル</param>
+		/// <param name="isButton">ボタン有効化指定</param>
 		internal static void GUISourceIcon(MergeSource src, GUIStyle gs, bool isButton)
 		{
 			var iconSize = Cm.GUIIconSize.Value;
@@ -329,6 +358,9 @@ namespace COM3D2.SkinMerge
 			}
 		}
 
+		/// <summary>
+		/// スキンメニューのアイコン描画
+		/// </summary>
 		internal static void GUISkinIcon(Texture2D icon, string tooltip)
 		{
 			var iconSize = Cm.GUIIconSize.Value;

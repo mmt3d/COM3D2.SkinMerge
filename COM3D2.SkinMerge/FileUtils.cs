@@ -20,6 +20,9 @@ namespace COM3D2.SkinMerge
 		private static readonly ManualLogSource Log = SkinMerge.Log;
         private static readonly string ModDir = UTY.gameProjectPath + @"\Mod";
 
+        /// <summary>
+        /// menuボディ書き込みヘルパークラス
+        /// </summary>
 		private class MenuBody : List<List<string>>
 		{
 			public void Add(params string[] args)
@@ -53,6 +56,9 @@ namespace COM3D2.SkinMerge
 			}
 		}
 
+        /// <summary>
+        /// AFileBaseからbyte[]を返却
+        /// </summary>
         private static byte[] ReadAFileBase(string fileName)
         {
             try
@@ -70,6 +76,9 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// TEXファイルをTexture2Dで返却
+        /// </summary>
         internal static Texture2D LoadTexture(string fileName)
         {
             var buffer = ReadAFileBase(fileName);
@@ -127,6 +136,9 @@ namespace COM3D2.SkinMerge
             return new TextureResource(width, height, textureFormat, array, array2).CreateTexture2D();
         }
 
+        /// <summary>
+        /// MENUファイルをMenuInfoで返却
+        /// </summary>
         internal static MenuInfo LoadMenu(string menuFileName, bool debugLocal=false)
         {
             try
@@ -147,6 +159,9 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// MODファイル版menu情報を読み込み、ベースmenu情報に合体して返却する
+        /// </summary>
         private static MenuInfo LoadMod(BinaryReader reader)
         {
             var menu = new MenuInfo();
@@ -213,6 +228,9 @@ namespace COM3D2.SkinMerge
             return baseMenu;
         }
 
+        /// <summary>
+        /// menuファイルをMenuInfoで返却する
+        /// </summary>
         private static MenuInfo LoadMenu(BinaryReader reader)
         {
             var menu = new MenuInfo();
@@ -289,6 +307,14 @@ namespace COM3D2.SkinMerge
             return menu;
         }
 
+        /// <summary>
+        /// MENUファイルを保存する(ベースとなるmenuファイルから情報を継承する)
+        /// 同時にTexファイルも保存する
+        /// </summary>
+        /// <param name="basePath">保存先パス</param>
+        /// <param name="baseMenuFileName">ベースmenuファイル名</param>
+        /// <param name="menu">保存対象MenuInfo</param>
+        /// <param name="resources">texファイルで同時保存するテクスチャリスト</param>
 		internal static bool SaveMenuInherited(string basePath, string baseMenuFileName, MenuInfo menu, Dictionary<string, Texture2D> resources)
 		{
             Directory.CreateDirectory(basePath);
@@ -380,6 +406,13 @@ namespace COM3D2.SkinMerge
             }
 		}
 		
+        /// <summary>
+        /// TEXファイルを保存する
+        /// </summary>
+        /// <param name="basePath">保存先パス</param>
+        /// <param name="fileName">ファイル名</param>
+        /// <param name="texture">対象Texture2D</param>
+        /// <returns></returns>
         private static bool SaveTexture(string basePath, string fileName, Texture2D texture)
         {
             var filePath = Path.Combine(basePath, fileName);
@@ -410,6 +443,11 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// 指定セーブディレクトリとModディレクトリから指定ファイル名のバックアップXMLファイルパスを検索する
+        /// </summary>
+        /// <param name="saveDir">対象menuファイルの保存パス(検索順の優先指定)</param>
+        /// <param name="fileName">対象menuファイル名</param>
         internal static string SearchBackupXmlPath(string saveDir, string fileName)
         {
             var xmlFileName = Path.ChangeExtension(fileName, ".skmg.xml").ToLowerInvariant();
@@ -431,6 +469,9 @@ namespace COM3D2.SkinMerge
             return path;
         }
 
+        /// <summary>
+        /// 指定XMLファイルからバックアップ構成情報を読み込む
+        /// </summary>
         internal static Backup LoadBackup(string filePath)
         {
             try
@@ -446,6 +487,9 @@ namespace COM3D2.SkinMerge
             }
         }
         
+        /// <summary>
+        /// 指定XMLファイルにバックアップ構成情報を保存する
+        /// </summary>
         internal static void SaveBackup(string filePath, Backup backup)
         {
             try
@@ -463,7 +507,10 @@ namespace COM3D2.SkinMerge
             }
         }
         
-        internal static void GenerateDelMenu(string basePath, string fileName)
+        /// <summary>
+        /// 乳首削除用MENUファイルを生成する
+        /// </summary>
+        internal static void GenerateDelNippleMenu(string basePath, string fileName)
         {
             Directory.CreateDirectory(basePath);
             var filePath = Path.Combine(basePath, fileName);
@@ -504,17 +551,26 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// 指定パスに指定フォルダが存在するかどうか
+        /// </summary>
         internal static bool ExistsFolder(string basePath, string folderName)
         {
             return Directory.Exists(Path.Combine(basePath, folderName));
         }
 
+        /// <summary>
+        /// 指定メニューファイル名が存在するかどうか
+        /// </summary>
         internal static bool ExistsMenu(string menuFileName)
         {
             var rid = menuFileName.ToLowerInvariant().GetHashCode();
             return SceneEdit.m_menuRidDic.ContainsKey(rid);
         }
 
+        /// <summary>
+        /// 指定RIDからmenuファイルを特定しMenuInfoで返却する(削除用メニューは除外)
+        /// </summary>
         internal static MenuInfo GetProperMenuFromRid(int rid)
         {
             SceneEdit.m_menuRidDic.TryGetValue(rid, out var menu);
@@ -527,11 +583,17 @@ namespace COM3D2.SkinMerge
 
     internal static class MaidPropExtensions
     {
+        /// <summary>
+        /// MaidPropから対応するMenuInfoを取得するExtensionメソッド
+        /// </summary>
         internal static MenuInfo GetMenu(this MaidProp prop)
         {
             return FileUtils.GetProperMenuFromRid(prop.nFileNameRID);
         }
 
+        /// <summary>
+        /// SubPropから対応するMenuInfoを返却するExtensionメソッド
+        /// </summary>
         internal static MenuInfo GetMenu(this SubProp prop)
         {
             return FileUtils.GetProperMenuFromRid(prop.nFileNameRID);

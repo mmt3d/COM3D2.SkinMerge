@@ -111,6 +111,9 @@ namespace COM3D2.SkinMerge
             Dm.OnGUI();
         }
 
+        /// <summary>
+        /// メインGUIの表示/非表示を切り替える
+        /// </summary>
         internal void ToggleGUI()
         {
             if (CurrentScene != 5) return; // not EditScene
@@ -120,6 +123,9 @@ namespace COM3D2.SkinMerge
             MergeContext.LoadSources();
         }
 
+        /// <summary>
+        /// 非同期タスクを並列数1で順次実行するランナー
+        /// </summary>
         internal class SequentialTaskRunner : MonoBehaviour
         {
             private readonly Queue<IEnumerator> _queue = new Queue<IEnumerator>();
@@ -153,6 +159,9 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// 同梱埋め込みリソースをバイト配列として取得する
+        /// </summary>
         internal static byte[] GetResourceBytes(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -167,6 +176,9 @@ namespace COM3D2.SkinMerge
             return bytes;
         }
 
+        /// <summary>
+        /// 同梱埋め込みリソース名の一覧を取得する
+        /// </summary>
         internal static List<string> ListResourceNames(string prefix = "")
         {
             var assembly = Assembly.GetExecutingAssembly();

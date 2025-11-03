@@ -307,6 +307,9 @@ namespace COM3D2.SkinMerge
             UpdateDelMenuMap();
         }
 
+        /// <summary>
+        /// メニュー優先度GUIのカスタム描画
+        /// </summary>
         private static void MenuPriorityDrawer(ConfigEntryBase entry)
         {
             if (!(entry is ConfigEntry<float> configEntry)) return;
@@ -318,6 +321,9 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// 言語選択GUIのカスタム描画
+        /// </summary>
         private void LanguageDrawer(ConfigEntryBase entry)
         {
             if (!(entry is ConfigEntry<string> configEntry)) return;
@@ -332,6 +338,9 @@ namespace COM3D2.SkinMerge
             });
         }
         
+        /// <summary>
+        /// 解像度選択GUIのカスタム描画
+        /// </summary>
         private void ResolutionDrawer(ConfigEntryBase entry)
         {
             var keys = _resolutionMap.Select(x => x.Key).ToList();
@@ -339,6 +348,9 @@ namespace COM3D2.SkinMerge
             DrawToggles(entry, keys, values);
         }
         
+        /// <summary>
+        /// 名前スタイル選択GUIのカスタム描画
+        /// </summary>
         private void SaveNameStyleDrawer(ConfigEntryBase entry)
         {
             var keys = _nameStyleMap.Keys.ToList();
@@ -346,6 +358,9 @@ namespace COM3D2.SkinMerge
             DrawToggles(entry, keys, values);
         }
         
+        /// <summary>
+        /// MaidLoader自動更新GUIのカスタム描画
+        /// </summary>
         private static void AutoMaidLoaderRefreshDrawer(ConfigEntryBase entry)
         {
             if (!(entry is ConfigEntry<bool> configEntry)) return;
@@ -355,6 +370,9 @@ namespace COM3D2.SkinMerge
                 GUILayout.Label(_L("cfg.auto_refresh.unavailable"), GS.ConfigLabel);
         }
         
+        /// <summary>
+        /// フィルターGUIのカスタム描画
+        /// </summary>
         private static void SourceFilterDrawer(ConfigEntryBase entry)
         {
             var keys = Enum.GetValues(typeof(SrcFilter)).Cast<SrcFilter>().ToList();
@@ -362,6 +380,9 @@ namespace COM3D2.SkinMerge
             DrawToggles(entry, keys, values, _ => Ctx.LoadSources());
         }
         
+        /// <summary>
+        /// 乳首削除メニュー選択GUIのカスタム描画
+        /// </summary>
         private void NippleDelMenuNameDrawer(ConfigEntryBase entry)
         {
             if (Sm.CurrentScene != 5)
@@ -383,6 +404,9 @@ namespace COM3D2.SkinMerge
             }, GS.ConfigFancyToggle);
         }
         
+        /// <summary>
+        /// カテゴリ別削除メニュー辞書を更新する
+        /// </summary>
         private void UpdateDelMenuMap()
         {
             DelMenuMap = new Dictionary<MPN, string>
@@ -395,6 +419,9 @@ namespace COM3D2.SkinMerge
             };
         }
 
+        /// <summary>
+        /// 乳首削除メニュー候補を検索する
+        /// </summary>
         private static List<KeyValuePair<string, GUIContent>> _delNippleMenuCache;
         private static List<KeyValuePair<string, GUIContent>> SearchDelNippleMenu()
         {
@@ -432,9 +459,12 @@ namespace COM3D2.SkinMerge
             return validDelMenus;
         }
 
+        /// <summary>
+        /// 乳首削除メニューを生成する
+        /// </summary>
         private void GenerateDelNippleMenu()
         {
-            FU.GenerateDelMenu(SavePath, GenerateDelNippleMenuName);
+            FU.GenerateDelNippleMenu(SavePath, GenerateDelNippleMenuName);
             Sm.TaskRunner.Add(WaitForMenuReflected(GenerateDelNippleMenuName));
             if (!AutoMaidLoaderRefresh.Value)
                 Dm.ShowDialog(_L("cfg.del_nipple_menu.generated_manual"));
@@ -445,6 +475,9 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// 生成した乳首削除メニューが反映されるのを待つコルーチン
+        /// </summary>
         private IEnumerator WaitForMenuReflected(string fileName)
         {
             // 生成されたmenuがModLoaderなどで反映されるのを待つ
@@ -457,6 +490,9 @@ namespace COM3D2.SkinMerge
             yield return null;
         }
         
+        /// <summary>
+        /// 選択肢(トグルリスト)描画の共通処理
+        /// </summary>
         private static void DrawToggles<T1, T2>(ConfigEntryBase entry, List<T1> keys, List<T2> values, Action<int> onChanged = null, GUIStyle gs = null)
         {
             if (!(entry is ConfigEntry<T1> configEntry)) return;
@@ -492,12 +528,18 @@ namespace COM3D2.SkinMerge
             }
         }
 
+        /// <summary>
+        /// オブジェクトをGUIContentに変換する
+        /// </summary>
         private static GUIContent ToGUIContent<T>(T content)
         {
             if (content is GUIContent gc) return gc;
             return new GUIContent(content?.ToString());
         }
         
+        /// <summary>
+        /// 設定GUIの右カラム幅を取得する
+        /// </summary>
         private static int GetColWidth()
         {
             try
@@ -514,6 +556,9 @@ namespace COM3D2.SkinMerge
 
     internal static class ConfigManagerExtensions
     {
+        /// <summary>
+        /// 指定MPNがフィルターに含まれているか返すExtensionメソッド
+        /// </summary>
         internal static bool Contains(this ConfigEntry<ConfigManager.SrcFilter> entry, MPN mpn)
         {
             var flag = (ConfigManager.SrcFilter)Enum.Parse(typeof(ConfigManager.SrcFilter), mpn.ToString());
@@ -522,6 +567,10 @@ namespace COM3D2.SkinMerge
     }
 
 #pragma warning disable 0169, 0414, 0649
+    /// <summary>
+    /// Downloaded from ConfigurationManager source code to support custom drawers.
+    /// https://github.com/BepInEx/BepInEx.ConfigurationManager#overriding-default-configuration-manager-behavior
+    /// </summary>
     internal sealed class ConfigurationManagerAttributes
     {
         public bool? ShowRangeAsPercent;

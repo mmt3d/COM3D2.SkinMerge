@@ -8,12 +8,18 @@ namespace COM3D2.SkinMerge
     using PARTS_COLOR = MaidParts.PARTS_COLOR;
     using static Localization;
 
+    /// <summary>
+    /// フリーカラーセット情報クラス
+    /// </summary>
     internal class ColorSetField
     {
         internal MPN Mpn;
         internal string FileNamePattern;
     }
 
+    /// <summary>
+    /// メニュー情報クラス
+    /// </summary>
     internal class MenuInfo
     {
         internal MPN Mpn;
@@ -30,6 +36,9 @@ namespace COM3D2.SkinMerge
         internal string ModBaseMenu;
         internal readonly Dictionary<string, byte[]> ModRawData = new Dictionary<string, byte[]>();
 
+        /// <summary>
+        /// 合成可能なテクスチャがあれば取得する
+        /// </summary>
         internal bool TryGetBlendable(out TextureBlend textureBlendMain, out TextureBlend textureBlendShadow)
         {
             var textureBlends = TextureBlends.Where(x =>
@@ -39,6 +48,9 @@ namespace COM3D2.SkinMerge
             return (textureBlendMain != null && textureBlendShadow != null) || TextureBlends.Count > 0;
         }
         
+        /// <summary>
+        /// 指定スロットの肌テクスチャ変更リストを取得する
+        /// </summary>
         internal List<TextureChange> GetTexChanges(SlotID slot)
         {
             var matNo = slot == SlotID.body ? 0 : 5;
@@ -50,6 +62,9 @@ namespace COM3D2.SkinMerge
                 .OrderBy(x => x.TexName).ToList();
         }
 
+        /// <summary>
+        /// MODファイル版menu情報をベースmenu情報に合体する
+        /// </summary>
         internal void OverrideModMenu(MenuInfo modMenu)
         {
             FileName = modMenu.FileName;
@@ -79,6 +94,9 @@ namespace COM3D2.SkinMerge
         }
     }
 
+    /// <summary>
+    /// テクスチャ合成情報クラス
+    /// </summary>
     internal class TextureBlend
     {
         internal int Index;
@@ -90,6 +108,9 @@ namespace COM3D2.SkinMerge
         internal BlendMode BlendMode = BlendMode.Alpha;
     }
 
+    /// <summary>
+    /// テクスチャ合成モード列挙型
+    /// </summary>
     internal enum BlendMode
     {
         None,
@@ -97,6 +118,9 @@ namespace COM3D2.SkinMerge
         Multiply
     }
 
+    /// <summary>
+    /// テクスチャ変更情報クラス
+    /// </summary>
     internal class TextureChange
     {
         internal SlotID SlotId;
@@ -112,6 +136,9 @@ namespace COM3D2.SkinMerge
         };
     }
 
+    /// <summary>
+    /// XMLバックアップファイル用情報クラス
+    /// </summary>
     public class Backup
     {
         public string SkinMergeVersion;
@@ -137,12 +164,18 @@ namespace COM3D2.SkinMerge
         }
     }
 
+    /// <summary>
+    /// 名前表示スタイル列挙型
+    /// </summary>
     internal enum NameStyle
     {
         Jp,
         En,
     }
     
+    /// <summary>
+    /// 合成元情報クラス
+    /// </summary>
     public class MergeSource
     {
         internal SlotID SlotID;
@@ -220,6 +253,9 @@ namespace COM3D2.SkinMerge
         }
     }
 
+    /// <summary>
+    /// 合成結果情報クラス
+    /// </summary>
     internal class MergeResult
     {
         internal SlotID SlotID;
