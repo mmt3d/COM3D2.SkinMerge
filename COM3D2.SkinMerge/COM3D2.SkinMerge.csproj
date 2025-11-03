@@ -35,7 +35,6 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="ConfigManager.cs" />
-        <Compile Include="DebugTool.cs" />
         <Compile Include="DialogManager.cs" />
         <Compile Include="Entities.cs" />
         <Compile Include="FileUtils.cs" />
