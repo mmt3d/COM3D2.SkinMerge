@@ -250,7 +250,7 @@ namespace COM3D2.SkinMerge
                     text = text + "\"" + reader.ReadString() + "\"";
                 if (string.IsNullOrEmpty(text)) continue;
                 var stringList = UTY.GetStringList(text);
-                var stringCom = UTY.GetStringCom(text);
+                var stringCom = UTY.GetStringCom(text).Trim();
                 switch (stringCom)
                 {
                     case "category":
@@ -364,7 +364,7 @@ namespace COM3D2.SkinMerge
                         text = text + "\"" + reader.ReadString() + "\"";
                     if (string.IsNullOrEmpty(text)) continue;
                     var stringList = UTY.GetStringList(text);
-                    var stringCom = UTY.GetStringCom(text);
+                    var stringCom = UTY.GetStringCom(text).Trim();
                     switch (stringCom)
                     {
                         case "priority":
