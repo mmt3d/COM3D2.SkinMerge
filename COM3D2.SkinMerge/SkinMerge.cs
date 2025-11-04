@@ -185,5 +185,34 @@ namespace COM3D2.SkinMerge
             return assembly.GetManifestResourceNames().ToList()
                 .Where(x => x.StartsWith(prefix)).ToList();
         }
+
+        /// <summary>
+        /// MaidLoader のMODリフレッシュをリフレクション経由で実行する
+        /// </summary>
+        internal bool MaidLoaderRefresh()
+        {
+            if (!HasMaidLoader) return false;
+            
+            if (Chainloader.PluginInfos.TryGetValue("COM3D2.MaidLoader", out var pluginInfo))
+            {
+                var maidLoaderAsm = pluginInfo.Instance.GetType().Assembly;
+                var maidLoaderType = maidLoaderAsm.GetType("COM3D2.MaidLoader.MaidLoader");
+                var refreshModField = maidLoaderType?.GetField("refreshMod", BindingFlags.Public | BindingFlags.Static);
+                var refreshModInstance = refreshModField?.GetValue(null);
+                var refreshCoMethod = refreshModInstance?.GetType().GetMethod("RefreshCo", BindingFlags.Public | BindingFlags.Instance);
+                var coroutine = refreshCoMethod?.Invoke(refreshModInstance, null);
+                if (coroutine is IEnumerator enumerator)
+                {
+                    TaskRunner.Add(enumerator);
+                    return true;
+                }
+                Logger.LogWarning($"RefreshCo() returned unexpected type: {coroutine?.GetType().FullName ?? "null"}");
+            }
+            else
+            {
+                Logger.LogInfo("MaidLoader not installed. Skipping refresh.");
+            }
+            return false;
+        }
     }
 }

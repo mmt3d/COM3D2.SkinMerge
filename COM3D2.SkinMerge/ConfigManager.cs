@@ -470,7 +470,7 @@ namespace COM3D2.SkinMerge
                 Dm.ShowDialog(_L("cfg.del_nipple_menu.generated_manual"));
             else
             {
-                Sm.TaskRunner.Add(MaidLoader.MaidLoader.refreshMod.RefreshCo());
+                Sm.MaidLoaderRefresh();
                 Dm.ShowDialog(_L("cfg.del_nipple_menu.generated_auto"));
             }
         }

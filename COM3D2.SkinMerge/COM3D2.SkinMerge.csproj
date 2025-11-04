@@ -76,9 +76,6 @@
         <Reference Include="COM3D2.API">
             <HintPath>..\libs\COM3D2.API.dll</HintPath>
         </Reference>
-        <Reference Include="COM3D2.MaidLoader">
-            <HintPath>..\libs\COM3D2.MaidLoader.dll</HintPath>
-        </Reference>
         <Reference Include="ConfigurationManager">
             <HintPath>..\libs\ConfigurationManager.dll</HintPath>
         </Reference>
