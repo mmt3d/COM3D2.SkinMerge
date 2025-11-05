@@ -18,7 +18,7 @@ namespace COM3D2.SkinMerge
 
     [BepInPlugin(PluginName, PluginName, PluginVersion)]
     [BepInDependency("COM3D2.MaidLoader", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency("com.bepis.bepinex.configurationmanager")]
+    [BepInDependency("com.bepis.bepinex.configurationmanager", BepInDependency.DependencyFlags.SoftDependency)]
 
     public class SkinMerge : BaseUnityPlugin
     {

@@ -2,7 +2,6 @@
 
 namespace COM3D2.SkinMerge
 {
-    using ConfigurationManager;
     internal class HarmonyPatches
     {
         private static SkinMerge Sm => SkinMerge.Instance;
@@ -76,16 +75,6 @@ namespace COM3D2.SkinMerge
             var maid = AccessTools.Field(__instance.GetType(), "maid_").GetValue(__instance) as Maid;
             if (!Sm.MergeContexts.TryGet(maid, out var ctx)) return;
             ctx.UpdateSkinColor(parts_color);
-        }
-
-        /// <summary>
-        /// ConfigurationManager でGUI内容がセットアップされた後にGUIの幅を頂戴するためのフック
-        /// </summary>
-        [HarmonyPatch(typeof(ConfigurationManager), nameof(ConfigurationManager.BuildSettingList))]
-        [HarmonyPostfix]
-        private static void ConfigurationManager_BuildSettingList_Postfix(ConfigurationManager __instance)
-        {
-            ConfigManager.ConfigurationManagerInstance = __instance;
         }
 
     }

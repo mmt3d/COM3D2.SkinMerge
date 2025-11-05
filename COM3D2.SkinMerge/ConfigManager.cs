@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using BepInEx.Bootstrap;
 using BepInEx.Configuration;
-using HarmonyLib;
 using UnityEngine;
 
 namespace COM3D2.SkinMerge
@@ -12,7 +13,6 @@ namespace COM3D2.SkinMerge
     using FU = FileUtils;
     using GU = GraphicUtils;
     using GS = GuiStyles;
-    using ConfigurationManager;
     using static Localization;
 
     internal class ConfigManager
@@ -37,7 +37,6 @@ namespace COM3D2.SkinMerge
             MPN.acctatoo, MPN.accnail, MPN.chikubicolor, MPN.hokuro, MPN.lip, MPN.facegloss, MPN.nose, MPN.null_mpn
         };
 
-        internal static ConfigurationManager ConfigurationManagerInstance { get; set; }
         private static int ColWidth => GetColWidth();
         
         [Flags]
@@ -536,21 +535,26 @@ namespace COM3D2.SkinMerge
             if (content is GUIContent gc) return gc;
             return new GUIContent(content?.ToString());
         }
-        
+
         /// <summary>
-        /// 設定GUIの右カラム幅を取得する
+        /// 設定GUIの右カラム幅をConfigurationManagerインスタンスのリフレクション経由で取得する
         /// </summary>
         private static int GetColWidth()
         {
-            try
+            if (Chainloader.PluginInfos.TryGetValue("ConfigurationManager", out var pluginInfo))
             {
-                return (int)AccessTools.Property(typeof(ConfigurationManager), "RightColumnWidth")
-                    .GetValue(ConfigurationManagerInstance, null);
+                var assembly = pluginInfo.Instance.GetType().Assembly;
+                var configurationManagerType = assembly.GetType("ConfigurationManager.ConfigurationManager");
+                var instanceProp = configurationManagerType?
+                    .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                    .FirstOrDefault(p => p.PropertyType == configurationManagerType);
+                var configManagerInstance = instanceProp?.GetValue(null, null) ?? pluginInfo.Instance;
+                var rightColumnProp = configurationManagerType?.GetProperty("RightColumnWidth");
+                var value = rightColumnProp?.GetValue(configManagerInstance, null);
+                if (value != null)
+                    return (int)value;
             }
-            catch (Exception)
-            {
-                return 275;
-            }
+            return 275;
         }
     }
 

@@ -48,12 +48,12 @@ COM3D2用 肌MOD合成プラグイン(BepInEx用)です。
 1. Releasesより最新のパッケージをダウンロードしてください。
 2. zip解凍し、`COM3D2.SkinMerge.dll` を `BepInEx\plugins` フォルダに入れてください。
 
-### 必須プラグイン
-- BepInEx.ConfigurationManager
-    - 設定GUIを利用するために必要です。
-    - BepinEx導入していれば大抵入ってる？
-
 ### 推奨プラグイン
+ 
+- BepInEx.ConfigurationManager
+    - `v1.0.2.0` より必須ではなくなりました。
+    - 設定GUIでの設定が楽なので推奨します。
+    - ~~BepinEx導入していれば大抵入ってる？~~ 入ってない方多いみたい。でも設定がその場で反映するし便利ですよ。そんな設定あったのっていう発見もあり。
 - MaidLoader
     - 合成MOD生成後に自動でMODリスト更新を行う機能を利用する場合に必要です。
     - 現在公開停止・・？
