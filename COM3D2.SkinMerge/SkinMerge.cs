@@ -26,7 +26,7 @@ namespace COM3D2.SkinMerge
         public const string PluginName = "SkinMerge";
         public const string PluginFullName = PluginTarget + PluginName;
         public const string PluginCopyright = "Copyright © mmt3d 2025";
-        public const string PluginVersion = "1.0.1.0";
+        public const string PluginVersion = "1.0.2.0";
         internal const string PluginTitleName = PluginName + " " + PluginVersion;
 
         private static SkinMerge _instance;
