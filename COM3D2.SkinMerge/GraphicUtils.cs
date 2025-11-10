@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +8,6 @@ namespace COM3D2.SkinMerge
     
     public static class GraphicUtils
 	{
-		private static readonly ManualLogSource Log = SkinMerge.Log;
-        
         private static readonly Dictionary<string, Material> CachedMaterials = new Dictionary<string, Material>();
         private static AssetBundle _assetBundle;
         private static readonly int BaseTex = Shader.PropertyToID("_BaseTex");
@@ -233,7 +230,7 @@ namespace COM3D2.SkinMerge
             if (pngData == null || pngData.Length == 0) return null;
             var texture = new Texture2D(2, 2);
             if (texture.LoadImage(pngData)) return texture;
-            Log.LogError("Failed to load PNG data into Texture2D.");
+            Log.Error("Failed to load PNG data into Texture2D.");
             return null;
         }
 

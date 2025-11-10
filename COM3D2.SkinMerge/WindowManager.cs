@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace COM3D2.SkinMerge
@@ -15,7 +14,6 @@ namespace COM3D2.SkinMerge
 		private static SkinMerge Sm => SkinMerge.Instance;
 		private static MergeContext Ctx => Sm.MergeContext;
 		private static ConfigManager Cm => ConfigManager.Instance;
-		private static readonly ManualLogSource Log = SkinMerge.Log;
 		
 		private readonly int _guiId = SkinMerge.PluginFullName.GetHashCode();
 		private Rect _guiRect;
@@ -314,7 +312,7 @@ namespace COM3D2.SkinMerge
 			}
 			catch (Exception ex)
 			{
-				Log.LogError("GuiFunc\r\n" + ex);
+				Log.Error("GuiFunc\r\n" + ex);
 			}
 		}
 		

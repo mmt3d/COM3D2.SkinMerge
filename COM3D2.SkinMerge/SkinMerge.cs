@@ -35,7 +35,8 @@ namespace COM3D2.SkinMerge
         private static WindowManager Wm => WindowManager.Instance;
         private static DialogManager Dm => DialogManager.Instance;
         private static SceneEdit SceneEdit => SceneEdit.Instance;
-        internal static ManualLogSource Log => Instance?.Logger;
+        internal static ManualLogSource LogSource => Instance?.Logger;
+        internal static string ConfigPath => Paths.ConfigPath;
         
         internal bool IsDeletingTattoo = false;
         internal int CurrentScene;
@@ -149,7 +150,7 @@ namespace COM3D2.SkinMerge
                     }
                     catch (Exception ex)
                     {
-                        Log.LogError($"非同期タスク実行中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
+                        Log.Error($"非同期タスク実行中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
                     }
 
                     yield return null;
@@ -168,7 +169,7 @@ namespace COM3D2.SkinMerge
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
             {
-                Log.LogError($"Resource '{resourceName}' not found.");
+                Log.Error($"Resource '{resourceName}' not found.");
                 throw new FileNotFoundException($"Resource '{resourceName}' not found.");
             }
             var bytes = new byte[stream.Length];
@@ -206,13 +207,21 @@ namespace COM3D2.SkinMerge
                     TaskRunner.Add(enumerator);
                     return true;
                 }
-                Logger.LogWarning($"RefreshCo() returned unexpected type: {coroutine?.GetType().FullName ?? "null"}");
+                Log.Warn($"RefreshCo() returned unexpected type: {coroutine?.GetType().FullName ?? "null"}");
             }
             else
             {
-                Logger.LogInfo("MaidLoader not installed. Skipping refresh.");
+                Log.Info("MaidLoader not installed. Skipping refresh.");
             }
             return false;
         }
     }
+
+    internal static class Log
+    {
+        internal static void Info(object data) => SkinMerge.LogSource.LogInfo(data);
+        internal static void Warn(object data) => SkinMerge.LogSource.LogWarning(data);
+        internal static void Error(object data) => SkinMerge.LogSource.LogError(data);
+    }
+    
 }

@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +16,6 @@ namespace COM3D2.SkinMerge
 	{
         private static ConfigManager Cm => ConfigManager.Instance;
         private static SceneEdit SceneEdit => SceneEdit.Instance;
-		private static readonly ManualLogSource Log = SkinMerge.Log;
         private static readonly string ModDir = UTY.gameProjectPath + @"\Mod";
 
         /// <summary>
@@ -66,12 +64,12 @@ namespace COM3D2.SkinMerge
                 using var aFileBase = GameUty.FileOpen(fileName, GameUty.FileSystem);
                 if (aFileBase.IsValid())
                     return aFileBase.ReadAll();
-                Log.LogError("コンテナが読めません。 :" + fileName);
+                Log.Error("コンテナが読めません。 :" + fileName);
                 return null;
             }
             catch (Exception ex)
             {
-                Log.LogError($"ReadAFileBase Error: file={fileName}: {ex.Message}\n{ex.StackTrace}");
+                Log.Error($"ReadAFileBase Error: file={fileName}: {ex.Message}\n{ex.StackTrace}");
                 return null;
             }
         }
@@ -88,7 +86,7 @@ namespace COM3D2.SkinMerge
             var text = binaryReader.ReadString();
             if (text != "CM3D2_TEX")
             {
-                Log.LogError("ヘッダーファイルが不正です。" + text);
+                Log.Error("ヘッダーファイルが不正です。" + text);
                 binaryReader.Close();
                 return null;
             }
@@ -154,7 +152,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"MENUファイル読み込み中にエラーが発生しました: file={menuFileName}: error={e.Message}\n{e.StackTrace}");
+                Log.Error($"MENUファイル読み込み中にエラーが発生しました: file={menuFileName}: error={e.Message}\n{e.StackTrace}");
                 return null;
             }
         }
@@ -401,7 +399,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"MENUファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
+                Log.Error($"MENUファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
                 throw;
             }
 		}
@@ -438,7 +436,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"TEXファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
+                Log.Error($"TEXファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
                 throw;
             }
         }
@@ -464,7 +462,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"XMLファイル検索処理中にエラーが発生しました: file={fileName}: error={e.Message}");
+                Log.Error($"XMLファイル検索処理中にエラーが発生しました: file={fileName}: error={e.Message}");
             }
             return path;
         }
@@ -482,7 +480,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"リストア構成の読み込みに失敗しました: {e.Message}");
+                Log.Error($"リストア構成の読み込みに失敗しました: {e.Message}");
                 throw;
             }
         }
@@ -502,7 +500,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"リストア構成ファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
+                Log.Error($"リストア構成ファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
                 throw;
             }
         }
@@ -546,7 +544,7 @@ namespace COM3D2.SkinMerge
             }
             catch (Exception e)
             {
-                Log.LogError($"MENUファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
+                Log.Error($"MENUファイル保存処理中にエラーが発生しました: file={filePath}: error={e.Message}");
                 throw;
             }
         }

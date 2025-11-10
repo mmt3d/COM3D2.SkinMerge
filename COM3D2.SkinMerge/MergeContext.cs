@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using BepInEx.Logging;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -21,7 +20,6 @@ namespace COM3D2.SkinMerge
         private static SkinMerge Sm => SkinMerge.Instance;
         private static ConfigManager Cm => ConfigManager.Instance;
         private static DialogManager Dm => DialogManager.Instance;
-        private static readonly ManualLogSource Log = SkinMerge.Log;
 
         internal class SourceFilter
         {
@@ -119,7 +117,7 @@ namespace COM3D2.SkinMerge
         {
             // menu情報上のmpnと実際のmpnが異なる場合がある(categoryが採用されてる)
             if (mi.Mpn != mpn)
-                Log.LogWarning($"LoadSources: MPN mismatched: {mi.Name}({mi.FileName}), taken `{mi.Mpn}` as `{mpn}`");
+                Log.Warn($"LoadSources: MPN mismatched: {mi.Name}({mi.FileName}), taken `{mi.Mpn}` as `{mpn}`");
             
             sources ??= Sources;
             // chikubicolor は folder にあたる chikubi も登録する
@@ -643,7 +641,7 @@ namespace COM3D2.SkinMerge
             _status |= Stat.Merged;
             _status &= ~Stat.Merging;
             stopwatch.Stop();
-            Log.LogInfo($"MergeSkin elapsed: {stopwatch.Elapsed.TotalSeconds} s");
+            Log.Info($"MergeSkin elapsed: {stopwatch.Elapsed.TotalSeconds} s");
             yield return null;
         }
         
@@ -855,10 +853,10 @@ namespace COM3D2.SkinMerge
             Maid.SetProp(MPN.folder_skin, attach.SkinFolderFileName, 0);
             Maid.GetProp(MPN.skin).boDut = true;
             if (Maid.GetProp(MPN.skin).GetMenu() == null)
-                Log.LogError($"Failed to get menu for {MPN.skin}: {attach.SkinFileName}");
+                Log.Error($"Failed to get menu for {MPN.skin}: {attach.SkinFileName}");
             Maid.GetProp(MPN.folder_skin).boDut = true;
             if (Maid.GetProp(MPN.folder_skin).GetMenu() == null)
-                Log.LogError($"Failed to get menu for {MPN.folder_skin}: {attach.SkinFolderFileName}");
+                Log.Error($"Failed to get menu for {MPN.folder_skin}: {attach.SkinFolderFileName}");
             Maid.Parts.SetPartsColor(PARTS_COLOR.SKIN, attach.SkinColor);
             Maid.Parts.SetPartsColor(PARTS_COLOR.SKIN_OUTLINE, attach.SkinOutlineColor);
             foreach (var src in attach.MergeSources)
@@ -871,13 +869,13 @@ namespace COM3D2.SkinMerge
                     Maid.SubPropAlpha(mpn, i, src.Alpha);
                     Maid.GetSubProp(mpn, i).bDut = true;
                     if (Maid.GetSubProp(mpn, i).GetMenu() == null)
-                        Log.LogError($"Failed to get menu for {mpn}: {src.MenuFileName}");
+                        Log.Error($"Failed to get menu for {mpn}: {src.MenuFileName}");
                 }
                 else
                 {
                     Maid.SetProp(mpn, src.MenuFileName, 0);
                     if (Maid.GetProp(mpn).GetMenu() == null)
-                        Log.LogError($"Failed to get menu for {mpn}: {src.MenuFileName}");
+                        Log.Error($"Failed to get menu for {mpn}: {src.MenuFileName}");
                 }
 
                 Maid.GetProp(mpn).boDut = true;

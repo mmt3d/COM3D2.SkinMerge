@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BepInEx;
 using Newtonsoft.Json;
 
 namespace COM3D2.SkinMerge
@@ -12,7 +11,7 @@ namespace COM3D2.SkinMerge
     {
         private static readonly Dictionary<string, Language> AllLanguages = new Dictionary<string, Language>();
         private static readonly List<string> FallbackLangCodes = new List<string>();
-        private static string ConfigPath => Path.Combine(Paths.ConfigPath, SM.PluginName);
+        private static string LocConfigPath => Path.Combine(SM.ConfigPath, SM.PluginName);
 
         static Localization()
         {
@@ -26,11 +25,11 @@ namespace COM3D2.SkinMerge
         /// </summary>
         private static void Setup()
         {
-            if (!Directory.Exists(ConfigPath))
-                Directory.CreateDirectory(ConfigPath);
+            if (!Directory.Exists(LocConfigPath))
+                Directory.CreateDirectory(LocConfigPath);
             SM.ListResourceNames(@"localization\").ForEach(x =>
             {
-                var filePath = Path.Combine(ConfigPath, Path.GetFileName(x));
+                var filePath = Path.Combine(LocConfigPath, Path.GetFileName(x));
                 if (File.Exists(filePath)) return;
                 using var writer = new BinaryWriter(File.OpenWrite(filePath));
                 writer.Write(SM.GetResourceBytes(x));
@@ -43,11 +42,11 @@ namespace COM3D2.SkinMerge
         /// </summary>
         private static void Init()
         {
-            var translationFiles = Directory.GetFiles(ConfigPath, "*.json");
+            var translationFiles = Directory.GetFiles(LocConfigPath, "*.json");
             foreach (var file in translationFiles)
             {
                 var langCode = Path.GetFileNameWithoutExtension(file);
-                var lang = JsonConvert.DeserializeObject<Language>(File.ReadAllText(Path.Combine(ConfigPath, file)));
+                var lang = JsonConvert.DeserializeObject<Language>(File.ReadAllText(Path.Combine(LocConfigPath, file)));
                 AllLanguages[langCode] = lang;
             }
 
