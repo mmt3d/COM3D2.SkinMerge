@@ -763,11 +763,12 @@ namespace COM3D2.SkinMerge
             if (Cm.AutoMaidLoaderRefresh.Value && Sm.HasMaidLoader)
             {
                 if (Sm.MaidLoaderRefresh())
-                    Sm.TaskRunner.Add(WaitForMenuReflected(menu.FileName));
+                    Sm.TaskRunner.Add(WaitForMenuReflected(menu.FileName), true);
                 Dm.ShowDialog(_L("dlg.msg.saved_auto_refresh"));
             }
             else
             {
+                Sm.TaskRunner.Add(WaitForMenuReflected(menu.FileName), true);
                 Dm.ShowDialog(_L("dlg.msg.saved_manual_refresh"));
             }
             _status |= Stat.Saved;
