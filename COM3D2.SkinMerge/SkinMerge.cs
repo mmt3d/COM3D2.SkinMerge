@@ -125,16 +125,35 @@ namespace COM3D2.SkinMerge
         }
 
         /// <summary>
+        /// 非同期タスクエントリクラス
+        /// </summary>
+        private class TaskEntry
+        {
+            internal IEnumerator Task { get; }
+            internal bool Cancellable { get; }
+            internal TaskEntry(IEnumerator task, bool cancellable)
+            {
+                Task = task;
+                Cancellable = cancellable;
+            }
+        }
+        
+        /// <summary>
         /// 非同期タスクを並列数1で順次実行するランナー
         /// </summary>
         internal class SequentialTaskRunner : MonoBehaviour
         {
-            private readonly Queue<IEnumerator> _queue = new Queue<IEnumerator>();
+            private readonly Queue<TaskEntry> _queue = new Queue<TaskEntry>();
+            private Coroutine _currentCoroutine;
             private bool _isRunning;
+            private bool _currentCancellable;
 
-            internal void Add(IEnumerator task)
+            internal void Add(IEnumerator task, bool cancellable = false)
             {
-                _queue.Enqueue(task);
+                if (_isRunning && _currentCancellable && _currentCoroutine != null)
+                    StopCoroutine(_currentCoroutine);
+
+                _queue.Enqueue(new TaskEntry(task, cancellable));
                 if (!_isRunning)
                     StartCoroutine(RunTasks());
             }
@@ -144,19 +163,14 @@ namespace COM3D2.SkinMerge
                 _isRunning = true;
                 while (_queue.Count > 0)
                 {
-                    try
-                    {
-                        StartCoroutine(_queue.Dequeue());
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error($"非同期タスク実行中にエラーが発生しました: {ex.Message}\n{ex.StackTrace}");
-                    }
-
-                    yield return null;
+                    var entry = _queue.Dequeue();
+                    _currentCancellable = entry.Cancellable;
+                    _currentCoroutine = StartCoroutine(entry.Task);
+                    yield return _currentCoroutine;
                 }
-
                 _isRunning = false;
+                _currentCancellable = false;
+                _currentCoroutine = null;
             }
         }
 
