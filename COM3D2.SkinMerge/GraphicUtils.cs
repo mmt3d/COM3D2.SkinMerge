@@ -62,6 +62,8 @@ namespace COM3D2.SkinMerge
             var w = width > 0 ? width : Math.Max(baseTex.width, blendTex.width);
             var h = height > 0 ? height : Math.Max(baseTex.height, blendTex.height);
             var rt = baseTex.CreateRenderTexture(w, h);
+            if (width > 0 && width < blendTex.width || height > 0 && height < blendTex.height)
+                blendTex = blendTex.Resized(width, height);
             
             Blend(ref rt, blendTex, BlendMode.Alpha, 1f);
             var resultTex = rt.CreateTexture2D();
