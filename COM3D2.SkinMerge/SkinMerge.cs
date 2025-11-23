@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Bootstrap;
 using HarmonyLib;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -120,6 +119,7 @@ namespace COM3D2.SkinMerge
             if (CurrentScene != 5) return; // not EditScene
             _guiOpen = !_guiOpen;
             if (!_guiOpen) return;
+            Cm.InitForEdit();
             MergeContext = MergeContexts.Setup(SceneEdit.maid);
             MergeContext.LoadSources();
         }

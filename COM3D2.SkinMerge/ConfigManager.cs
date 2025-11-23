@@ -305,6 +305,23 @@ namespace COM3D2.SkinMerge
 
             UpdateDelMenuMap();
         }
+       
+        /// <summary>
+        /// エディットシーン用初期化
+        /// </summary>
+        internal void InitForEdit()
+        {
+            SearchDelNippleMenu();
+        }
+
+        /// <summary>
+        /// 指定メニューが削除メニュー扱いかどうかを返す
+        /// </summary>
+        internal bool ContainsDelMenu(string menuFileName)
+        {
+            return DelMenuMap.Values.Contains(menuFileName) ||
+                   SearchDelNippleMenu().Any(x => x.Key == menuFileName);
+        }
 
         /// <summary>
         /// メニュー優先度GUIのカスタム描画

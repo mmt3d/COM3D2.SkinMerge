@@ -574,7 +574,7 @@ namespace COM3D2.SkinMerge
             SceneEdit.m_menuRidDic.TryGetValue(rid, out var menu);
             if (menu == null || menu.m_boDelOnly) return null;
             // 削除用メニューなのになぜかm_boDelOnlyがtrueになってないもの
-            if (Cm.DelMenuMap.Values.Contains(menu.m_strMenuFileName)) return null;
+            if (Cm.ContainsDelMenu(menu.m_strMenuFileName)) return null;
             return LoadMenu(menu.m_strMenuFileName);
         }
     }
