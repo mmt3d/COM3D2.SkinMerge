@@ -143,6 +143,10 @@ namespace COM3D2.SkinMerge
 				GUILayout.Label(_L("dlg.msg.exists_same_name"), GS.Warning);
 				dialog.EnableOk = false;
 			}
+			else if (!dialog.EnableOk)
+			{
+				dialog.EnableOk = true;
+			}
 
 			using (new GUILayout.HorizontalScope())
 			{
