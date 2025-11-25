@@ -6,6 +6,7 @@ namespace COM3D2.SkinMerge
 	using GS = GuiStyles;
 	using SlotID = TBody.SlotID;
 	using static Localization;
+	using static PluginInfo;
 
 	internal class WindowManager
 	{
@@ -15,7 +16,7 @@ namespace COM3D2.SkinMerge
 		private static MergeContext Ctx => Sm.MergeContext;
 		private static ConfigManager Cm => ConfigManager.Instance;
 		
-		private readonly int _guiId = SkinMerge.PluginFullName.GetHashCode();
+		private readonly int _guiId = PluginFullName.GetHashCode();
 		private Rect _guiRect;
 		private Vector2? _guiPos;
 		private bool _initGui;
@@ -80,7 +81,7 @@ namespace COM3D2.SkinMerge
 
 				using (new GUILayout.HorizontalScope())
 				{
-					GUILayout.Label(SkinMerge.PluginTitleName, GS.LabelTitle);
+					GUILayout.Label(PluginTitleName, GS.LabelTitle);
 					if (GUILayout.Button("✖", GS.CloseButton))
 					{
 						Sm.ToggleGUI();

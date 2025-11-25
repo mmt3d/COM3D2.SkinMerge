@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge", "COM3D2.SkinMerge\COM3D2.SkinMerge.csproj", "{3BDD0838-FA3C-43FC-806A-FF21297F65FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge.BepInEx", "src\BepInEx\COM3D2.SkinMerge.BepInEx.csproj", "{3BDD0838-FA3C-43FC-806A-FF21297F65FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

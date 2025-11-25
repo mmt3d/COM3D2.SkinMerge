@@ -6,12 +6,13 @@ using Newtonsoft.Json;
 namespace COM3D2.SkinMerge
 {
     using SM = SkinMerge;
+    using static PluginInfo;
     
     internal static class Localization
     {
         private static readonly Dictionary<string, Language> AllLanguages = new Dictionary<string, Language>();
         private static readonly List<string> FallbackLangCodes = new List<string>();
-        private static string LocConfigPath => Path.Combine(SM.ConfigPath, SM.PluginName);
+        private static string LocConfigPath => Path.Combine(SM.ConfigPath, PluginName);
 
         static Localization()
         {

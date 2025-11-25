@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 namespace COM3D2.SkinMerge
 {
     using GU = GraphicUtils;
+    using static PluginInfo;
 
     [BepInPlugin(PluginName, PluginName, PluginVersion)]
     [BepInDependency("COM3D2.MaidLoader", BepInDependency.DependencyFlags.SoftDependency)]
@@ -21,13 +22,6 @@ namespace COM3D2.SkinMerge
 
     public class SkinMerge : BaseUnityPlugin
     {
-        public const string PluginTarget = "COM3D2.";
-        public const string PluginName = "SkinMerge";
-        public const string PluginFullName = PluginTarget + PluginName;
-        public const string PluginCopyright = "Copyright © mmt3d 2025";
-        public const string PluginVersion = "1.0.2.0";
-        internal const string PluginTitleName = PluginName + " " + PluginVersion;
-
         private static SkinMerge _instance;
         internal static SkinMerge Instance => _instance ??= FindObjectOfType<SkinMerge>();
         private static ConfigManager Cm => ConfigManager.Instance;

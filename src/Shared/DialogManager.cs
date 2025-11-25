@@ -7,6 +7,7 @@ namespace COM3D2.SkinMerge
 	using GS = GuiStyles;
 	using FU = FileUtils;
 	using static Localization;
+	using static PluginInfo;
 
 	internal class DialogManager
     {
@@ -28,7 +29,7 @@ namespace COM3D2.SkinMerge
         }
         
         private readonly List<Dialog> _dialogs = new List<Dialog>();
-        private readonly int _guiIdBase = SkinMerge.PluginFullName.GetHashCode() + 1;
+        private readonly int _guiIdBase = PluginFullName.GetHashCode() + 1;
 
         internal void OnGUI()
         {
@@ -36,7 +37,7 @@ namespace COM3D2.SkinMerge
 	        {
 		        var guiId = _guiIdBase + _dialogs.IndexOf(dialog);
 		        dialog.Rect = GUILayout.Window(guiId, dialog.Rect, _ => DialogGuiFunc(dialog, guiId),
-			        SkinMerge.PluginName, GS.DialogWindow);
+			        PluginName, GS.DialogWindow);
 		        GUI.BringWindowToFront(guiId);
 		        // マウスクリックイベントを透過させない
 		        if (dialog.Rect.Contains(Event.current.mousePosition) && Input.GetMouseButton(0))
