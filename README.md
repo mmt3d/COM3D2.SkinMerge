@@ -23,8 +23,9 @@
 
 # 概要
 
-COM3D2用 肌MOD合成プラグイン(BepInEx用)です。  
+COM3D2用 肌MOD合成プラグインです。  
 タトゥーやほくろをはじめとした肌に重ねて表示する仕様のカテゴリを合成し個別メイド専用の肌MODにまとめることでメモリ消費量を削減します。  
+BepInEx用とSybaris用とありますが、BepInEx用を推奨します。(MaidLoaderとの連携・設定GUI等の利便性のため)  
 次の状況の方におすすめです。(作者の状況そのまんまです)
 
 - タトゥーを大量に重ねていてメモリ消費量が激しい
@@ -37,24 +38,29 @@ COM3D2用 肌MOD合成プラグイン(BepInEx用)です。
 # 動作条件
 
 - COM3D2 専用 (2.5非対応)
-- BepInEx 導入済み
-    - ※動かないバージョンがあるようで調査中です(5.4.22 は動作確認済み)
+- BepInEx または Sybaris 導入済み
 
 
 # 導入方法
 
 ### 本プラグインインストール
 
-1. Releasesより最新のパッケージをダウンロードしてください。
-2. zip解凍し、`COM3D2.SkinMerge.dll` を `BepInEx\plugins` フォルダに入れてください。
+- BepInEx版
+  1. Releasesより最新のパッケージの `*-BepInEx.zip` をダウンロードしてください。
+  2. zip解凍し、`COM3D2.SkinMerge.dll` を `BepInEx\plugins` フォルダに入れてください。
+- Sybaris版
+  1. Releasesより最新のパッケージの `*-Sybaris.zip` をダウンロードしてください。
+  2. zip解凍し、`COM3D2.SkinMerge.dll` を `Sybaris\UnityInjector` フォルダに、`COM3D2.SkinMerge.Managed.dll`/`COM3D2.SkinMerge.Patcher.dll` を `Sybaris` フォルダに入れてください。
+
+※BepInEx版・Sybaris版を両方とも導入しても片方しか動かないようになっておりますが、どちらか一方だけにしたほうが良いです。
 
 ### 推奨プラグイン
  
-- BepInEx.ConfigurationManager
+- BepInEx.ConfigurationManager (BepInEx版のみ)
     - `v1.0.2.0` より必須ではなくなりました。
     - 設定GUIでの設定が楽なので推奨します。
     - ~~BepinEx導入していれば大抵入ってる？~~ 入ってない方多いみたい。でも設定がその場で反映するし便利ですよ。そんな設定あったのっていう発見もあり。
-- MaidLoader
+- MaidLoader (BepInEx版のみ)
     - 合成MOD生成後に自動でMODリスト更新を行う機能を利用する場合に必要です。
     - 現在公開停止・・？
     - 入手できない場合の対処方法
@@ -62,6 +68,8 @@ COM3D2用 肌MOD合成プラグイン(BepInEx用)です。
           - ModRefresh プラグインで手動更新する
           - COM3D2を再起動し、再度合成作業して保存する(既存MOD上書きならすぐ使えます)
 
+※Sybaris版でMODを即時更新する方法はないかと思いますので、合成MODを**新規**生成した場合のみ下記の方法で対応してください。
+- COM3D2を再起動し、再度合成作業して保存する(既存MOD上書きならすぐ使えます)
 
 # 使用方法
 
@@ -164,8 +172,9 @@ COM3D2の実際のレンダリング仕様に忠実に合わせることを目�
 
 # 設定変更
 
-`F1`キーで表示されるBepInEx設定GUIにて各種設定が可能です。  
-設定内容は`BepInEx\config\SkinMerge.cfg` に保存されます。こちらのファイルを直接編集もできますが、GUIでの変更をおすすめします。
+`F1`キーで表示されるBepInEx設定GUIにて各種設定が可能です。(BepInEx版かつConfigurationManager導入時のみ)
+- (BepInEx): 設定内容は`BepInEx\config\SkinMerge.cfg` に保存されます。こちらのファイルを直接編集もできますが、GUIでの変更をおすすめします。
+- (Sybaris): 設定内容は`Sybaris\UnityInjector\config\SkinMerge.cfg` に保存されます。GUIはなく直接編集しか方法はありません。
 
 ![settings_gui](docs/img-configuration.png)
 

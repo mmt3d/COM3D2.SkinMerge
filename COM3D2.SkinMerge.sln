@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge.BepInEx", "src\BepInEx\COM3D2.SkinMerge.BepInEx.csproj", "{3BDD0838-FA3C-43FC-806A-FF21297F65FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge.Sybaris", "src\Sybaris\Plugin\COM3D2.SkinMerge.Sybaris.csproj", "{845119B2-B924-4DD8-946E-A028AE88F639}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge.Managed", "src\Sybaris\Managed\COM3D2.SkinMerge.Managed.csproj", "{DA686586-8FAE-48C1-8421-96E21E3837B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM3D2.SkinMerge.Patcher", "src\Sybaris\Patcher\COM3D2.SkinMerge.Patcher.csproj", "{CC0C6DA5-AB9F-4228-93DF-52C6232159E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +19,17 @@ Global
 		{3BDD0838-FA3C-43FC-806A-FF21297F65FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BDD0838-FA3C-43FC-806A-FF21297F65FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BDD0838-FA3C-43FC-806A-FF21297F65FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{845119B2-B924-4DD8-946E-A028AE88F639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845119B2-B924-4DD8-946E-A028AE88F639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845119B2-B924-4DD8-946E-A028AE88F639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845119B2-B924-4DD8-946E-A028AE88F639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA686586-8FAE-48C1-8421-96E21E3837B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA686586-8FAE-48C1-8421-96E21E3837B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA686586-8FAE-48C1-8421-96E21E3837B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA686586-8FAE-48C1-8421-96E21E3837B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0C6DA5-AB9F-4228-93DF-52C6232159E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0C6DA5-AB9F-4228-93DF-52C6232159E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0C6DA5-AB9F-4228-93DF-52C6232159E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0C6DA5-AB9F-4228-93DF-52C6232159E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
