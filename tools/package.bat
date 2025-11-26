@@ -1,7 +1,7 @@
 @echo off
 
 set PLUGIN_NAME=COM3D2.SkinMerge
-set ASSEMBLY_INFO_CS=src/Shared/Properties/AssemblyInfo.cs
+set ASSEMBLY_INFO_CS=src/Shared/Properties/AssemblyInfo.Common.cs
 
 for /f "tokens=*" %%i in ('powershell -Command ^
     "$content = Get-Content '%ASSEMBLY_INFO_CS%'; " ^
