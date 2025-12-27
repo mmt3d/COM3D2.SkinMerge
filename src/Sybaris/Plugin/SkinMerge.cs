@@ -248,8 +248,7 @@ namespace COM3D2.SkinMerge
         {
             if (!EnableHook || !MergeContexts.TryGet(e.Instance, out var ctx)) return;
             var fileName = ctx.Maid.GetProp(e.Mpn).listSubProp[e.SubNo].strFileName;
-            var source = ctx.Sources.Find(x => x.MenuFileName == fileName);
-            if (source != null)
+            foreach (var source in ctx.Sources.FindAll(x => x.MenuFileName == fileName))
                 source.MenuAlpha = e.Alpha;
         }
         

@@ -101,12 +101,13 @@ namespace COM3D2.SkinMerge
         #region source-methods
        
         /// <summary>
-        /// 指定スロットの合成元リストを返却する
+        /// 指定スロットの合成元リストを返却する (GUI表示用)
+        /// ※ BODY/HEAD両方合成対象とするアイテムは、スロット違いなら表示しない
         /// </summary>
         internal List<MergeSource> GetSources(SlotID slot)
         {
             return Sources
-                .Where(x => x.SlotID == slot && x.BlendMode != BlendMode.None && x.IsVisible)
+                .Where(x => x.SlotID == slot && x.BlendMode != BlendMode.None && x.IsVisible && !x.IsExtraSlot)
                 .OrderBy(x => x.LayerNo)
                 .ToList();
         }
@@ -199,8 +200,8 @@ namespace COM3D2.SkinMerge
             {
                 var mi = FU.GetProperMenuFromRid(src.MenuFileName.GetRid());
                 if (mi == null) continue;
-                if (mi.TryGetBlendable(out var tbMain, out var tbShadow))
-                    AddSource(src.Mpn, mi, tbMain, tbShadow, src.Alpha, true, true, conflictSources);
+                foreach (var tb in mi.GetTexBlendPairs())
+                    AddSource(src.Mpn, mi, tb.Main, tb.Shadow, src.Alpha, true, true, conflictSources);
             }
             return conflictSources;
         }
@@ -222,7 +223,7 @@ namespace COM3D2.SkinMerge
         /// </summary>
         private List<MergeSource> GetMergedSources()
         {
-            var sources = Sources.Where(x => x.IsSelected && x.IsVisible).ToList();
+            var sources = Sources.Where(x => x.IsSelected && x.IsVisible && !x.IsExtraSlot).ToList();
             return UnnestSources(sources).ToList();
         }
 
@@ -231,7 +232,7 @@ namespace COM3D2.SkinMerge
         /// </summary>
         private List<MergeSource> GetUnmergedSources()
         {
-            var sources = Sources.Where(x => !x.IsSelected || !x.IsVisible).ToList();
+            var sources = Sources.Where(x => !x.IsSelected || !x.IsVisible && !x.IsExtraSlot).ToList();
             return UnnestSources(sources).ToList();
         }
 
@@ -539,8 +540,8 @@ namespace COM3D2.SkinMerge
                         if (mi == null) continue;
                         var selected = restoreSelected?.Contains(mi.FileName.ToLowerInvariant());
                         var visible = ContainsFilter(mi.Mpn, selected);
-                        if (mi.TryGetBlendable(out var tbMain, out var tbShadow))
-                            AddSource(mpn, mi, tbMain, tbShadow, sp.fTexMulAlpha, visible, selected);
+                        foreach (var tb in mi.GetTexBlendPairs())
+                            AddSource(mpn, mi, tb.Main, tb.Shadow, sp.fTexMulAlpha, visible, selected);
                     }
                 }
                 else
@@ -549,8 +550,8 @@ namespace COM3D2.SkinMerge
                     if (mi == null) continue;
                     var selected = restoreSelected?.Contains(mi.FileName.ToLowerInvariant());
                     var visible = ContainsFilter(mi.Mpn, selected);
-                    if (mi.TryGetBlendable(out var tbMain, out var tbShadow))
-                        AddSource(mpn, mi, tbMain, tbShadow, 1f, visible, selected);
+                    foreach (var tb in mi.GetTexBlendPairs())
+                        AddSource(mpn, mi, tb.Main, tb.Shadow, 1f, visible, selected);
                 }
             }
             
@@ -566,7 +567,7 @@ namespace COM3D2.SkinMerge
             if (sourcesForStatus == null) return;
             foreach (var keep in sourcesForStatus)
             {
-                var dest = Sources.Find(x => x.MenuFileName == keep.MenuFileName);
+                var dest = Sources.Find(x => x.SlotID == keep.SlotID && x.MenuFileName == keep.MenuFileName);
                 if (dest == null) continue;
                 dest.IsDone = keep.IsDone;
                 dest.IsSelected = keep.IsSelected;
@@ -608,6 +609,11 @@ namespace COM3D2.SkinMerge
                              .Where(x => x.SlotID == slot && x.IsSelected && x.IsVisible)
                              .OrderBy(x => x.LayerNo))
                 {
+                    // BODY/HEAD両方に存在するMPNの場合、主要スロット側で合成対象としていないならスキップする
+                    if (src.IsExtraSlot && !Sources.Any(x => x.SlotID != src.SlotID &&
+                            x.MenuFileName == src.MenuFileName&& x.IsSelected && x.IsVisible))
+                        continue;
+                        
                     var blendTexMain = FU.LoadTexture(src.TextureFileMain);
                     var errorMessages = new List<string>();
                     if (!blendTexMain) errorMessages.Add($"MainTex: {src.TextureFileMain}");
@@ -853,15 +859,15 @@ namespace COM3D2.SkinMerge
             ClearAllTattoo();
             Maid.SetProp(MPN.skin, attach.SkinFileName, 0);
             Maid.SetProp(MPN.folder_skin, attach.SkinFolderFileName, 0);
-            Maid.GetProp(MPN.skin).boDut = true;
             if (Maid.GetProp(MPN.skin).GetMenu() == null)
                 Log.Error($"Failed to get menu for {MPN.skin}: {attach.SkinFileName}");
-            Maid.GetProp(MPN.folder_skin).boDut = true;
             if (Maid.GetProp(MPN.folder_skin).GetMenu() == null)
                 Log.Error($"Failed to get menu for {MPN.folder_skin}: {attach.SkinFolderFileName}");
             Maid.Parts.SetPartsColor(PARTS_COLOR.SKIN, attach.SkinColor);
             Maid.Parts.SetPartsColor(PARTS_COLOR.SKIN_OUTLINE, attach.SkinOutlineColor);
-            foreach (var src in attach.MergeSources)
+            Maid.AllProcProp();
+
+            foreach (var src in attach.MergeSources.GroupBy(x => x.MenuFileName).Select(x => x.First()))
             {
                 var mpn = src.Mpn;
                 if (mpn == MPN.acctatoo || mpn == MPN.hokuro)
@@ -869,7 +875,6 @@ namespace COM3D2.SkinMerge
                     var i = Maid.GetProp(mpn).listSubProp?.Count ?? 0;
                     Maid.SetSubProp(mpn, i, src.MenuFileName);
                     Maid.SubPropAlpha(mpn, i, src.Alpha);
-                    Maid.GetSubProp(mpn, i).bDut = true;
                     if (Maid.GetSubProp(mpn, i).GetMenu() == null)
                         Log.Error($"Failed to get menu for {mpn}: {src.MenuFileName}");
                 }
@@ -879,8 +884,6 @@ namespace COM3D2.SkinMerge
                     if (Maid.GetProp(mpn).GetMenu() == null)
                         Log.Error($"Failed to get menu for {mpn}: {src.MenuFileName}");
                 }
-
-                Maid.GetProp(mpn).boDut = true;
             }
 
             Sm.EnableHook = true;
@@ -902,7 +905,6 @@ namespace COM3D2.SkinMerge
                     Maid.SetProp(src.Mpn, delMenu, 0);
                 else
                     Maid.DelProp(src.Mpn);
-                Maid.GetProp(src.Mpn).boDut = true;
             });
             Maid.AllProcProp();
         }

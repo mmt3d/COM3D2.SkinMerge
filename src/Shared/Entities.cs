@@ -37,15 +37,19 @@ namespace COM3D2.SkinMerge
         internal readonly Dictionary<string, byte[]> ModRawData = new Dictionary<string, byte[]>();
 
         /// <summary>
-        /// 合成可能なテクスチャがあれば取得する
+        /// 合成可能なテクスチャのmain/shadowセットのリストを返却する
         /// </summary>
-        internal bool TryGetBlendable(out TextureBlend textureBlendMain, out TextureBlend textureBlendShadow)
+        internal List<TextureBlendPair> GetTexBlendPairs()
         {
-            var textureBlends = TextureBlends.Where(x =>
-                x.MatNo == 0 && x.SlotId == SlotID.body || x.MatNo == 5 && x.SlotId == SlotID.head).ToList();
-            textureBlendMain = textureBlends.Find(x => x.TexName ==  "_MainTex");
-            textureBlendShadow = textureBlends.Find(x => x.TexName == "_ShadowTex");
-            return (textureBlendMain != null && textureBlendShadow != null) || TextureBlends.Count > 0;
+            return TextureBlends
+                .Where(x => x.SlotId == SlotID.body && x.MatNo == 0 || x.SlotId == SlotID.head && x.MatNo == 5)
+                .GroupBy(x => new { x.SlotId, x.MatNo })
+                .Select(g =>
+                {
+                    var main = g.FirstOrDefault(x => x.TexName == "_MainTex");
+                    var shadow = g.FirstOrDefault(x => x.TexName == "_ShadowTex");
+                    return new TextureBlendPair { Main = main, Shadow = shadow };
+                }).ToList();
         }
         
         /// <summary>
@@ -120,6 +124,15 @@ namespace COM3D2.SkinMerge
         internal BlendMode BlendMode = BlendMode.Alpha;
     }
 
+    /// <summary>
+    /// テクスチャ合成(main/shadow)セット情報クラス
+    /// </summary>
+    internal class TextureBlendPair
+    {
+        internal TextureBlend Main;
+        internal TextureBlend Shadow;
+    }
+        
     /// <summary>
     /// テクスチャ合成モード列挙型
     /// </summary>
@@ -258,6 +271,23 @@ namespace COM3D2.SkinMerge
                                    $" {_L("gui.label.blend_mode")}: {FixedBlendMode}\n" +
                                    $" {_L("gui.label.opacity")}: {FixedAlpha}";
 
+        internal bool IsExtraSlot
+        {
+            get
+            {
+                switch (Mpn)
+                {
+                    case MPN.hokuro:
+                    case MPN.lip:
+                    case MPN.facegloss:
+                    case MPN.nose:
+                        return SlotID != SlotID.head;
+                    default:
+                        return SlotID !=  SlotID.body;
+                }
+            }
+        }
+        
         internal void Toggle()
         {
             IsSelected = !IsSelected;
