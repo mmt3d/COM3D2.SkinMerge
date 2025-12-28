@@ -11,6 +11,8 @@ namespace COM3D2.SkinMerge.Patcher
 
     public static class SkinMergePatcher
     {
+        public static readonly string[] TargetAssemblyNames = { "Assembly-CSharp.dll" };
+
         public const string SubPluginFullName = "COM3D2.SkinMerge.Patcher";
 
         /// <summary>
